@@ -3,7 +3,6 @@
 namespace Marqant\MarqantPay\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Marqant\MarqantPay\Services\MarqantPayService;
 
 trait Billable
@@ -29,6 +28,7 @@ trait Billable
      *
      * @return \Illuminate\Database\Eloquent\Model|$this
      */
+    // TODO: create object for payment method
     private function savePaymentMethod(array $payment_method): Model
     {
         MarqantPayService::savePaymentMethod($this, $payment_method);
@@ -57,24 +57,10 @@ trait Billable
      *
      * @return \Illuminate\Database\Eloquent\Model|$this
      */
-    private function charge(array $payment_method): Model
+    private function charge(int $amount): Model
     {
-        MarqantPayService::charge($this, $payment_method);
+        MarqantPayService::charge($this, $amount);
 
         return $this;
-    }
-
-    /**
-     * Create customer at the payment provider.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     *
-     * @param string                                $provider_id
-     *
-     * @return \Illuminate\Database\Eloquent\Builder $query
-     */
-    private function scopeByProviderId(Builder $query, string $provider_id): Builder
-    {
-        return $query->where('provider_id', $provider_id);
     }
 }

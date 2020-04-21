@@ -93,3 +93,7 @@ Subscriptions are managed through the payment provider gateway that you pull in.
 ## Tests
 
 TODO!
+
+## Development
+
+TODO!
