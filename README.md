@@ -6,4 +6,18 @@ This project aims to make it as easy as possible to implement a payment provider
   
 ## Installation
 
-...
+Require the package through composer.
+
+```bash
+compsoer require marqant/marqant-pay
+```
+
+Create the migrations for at least one billable model.
+
+```bash
+php artisan marqant-pay:migrations App\\User
+# or
+php artisan marqant-pay:migrations "App\User"
+```
+
+
