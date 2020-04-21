@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class {{CLASS_NAME}} extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('{{TABLE_NAME}}', function (Blueprint $table) {
+            $table->string('marqant_pay_provider')->nullable();
+            $table->string('marqant_pay_provider_id')->nullable();
+            $table->string('marqant_pay_card_brand')->nullable();
+            $table->string('marqant_pay_card_last_four', 4)->nullable();
+            $table->timestamp('marqant_pay_trial_ends_at')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('{{TABLE_NAME}}', function(Blueprint $table) {
+            $table->dropColumn([
+                'marqant_pay_provider',
+                'marqant_pay_provider_id',
+                'marqant_pay_card_brand',
+                'marqant_pay_card_last_four',
+                'marqant_pay_trial_ends_at'
+            ]);
+        });
+    }
+}
