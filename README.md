@@ -8,13 +8,13 @@ This project aims to make it as easy as possible to implement a payment provider
 
 Require the package through composer.
 
-```bash
+```shell script
 compsoer require marqant/marqant-pay
 ```
 
 Create the migrations for at least one billable model.
 
-```bash
+```shell script
 php artisan marqant-pay:migrations App\\User
 # or
 php artisan marqant-pay:migrations "App\User"
@@ -25,14 +25,13 @@ php artisan marqant-pay:migrations "App\User"
 For each payment provider that you want to connect to, you will first have to pull in a payment gateway through
  composer. For example here we pull in the stripe gateway.
 
-```bash
+```shell script
 composer require marqant/marqant-pay-stripe
 ```
 
 Then you will have to add it to the `marqant-pay.php` config file. Create it if it doesn't exist yet.
 
 ```php
-
 return [
     /*
      |--------------------------------------------------------------------------
@@ -63,7 +62,7 @@ The setup consists of the database table columns needed to store provider relate
 To create the needed migrations run the following command but replace the `User` model if you want another model to
  be used as customer, eg. a `Company` model.
 
-```bash
+```shell script
 php artisan marqant-pay:migrations App\\User
 # or
 php artisan marqant-pay:migrations "App\User"
