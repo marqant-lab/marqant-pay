@@ -15,7 +15,6 @@ class {{CLASS_NAME}} extends Migration
     {
         Schema::table('{{TABLE_NAME}}', function (Blueprint $table) {
             $table->string('marqant_pay_provider')->nullable();
-            $table->string('marqant_pay_provider_id')->nullable();
             $table->string('marqant_pay_card_brand')->nullable();
             $table->string('marqant_pay_card_last_four', 4)->nullable();
             $table->timestamp('marqant_pay_trial_ends_at')->nullable();
@@ -32,7 +31,6 @@ class {{CLASS_NAME}} extends Migration
         Schema::table('{{TABLE_NAME}}', function(Blueprint $table) {
             $table->dropColumn([
                 'marqant_pay_provider',
-                'marqant_pay_provider_id',
                 'marqant_pay_card_brand',
                 'marqant_pay_card_last_four',
                 'marqant_pay_trial_ends_at'

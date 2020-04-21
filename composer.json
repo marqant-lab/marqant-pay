@@ -10,18 +10,20 @@
         }
     ],
     "require": {
-        "illuminate/support": "^6.0|^7.0"
+        "illuminate/support": "^6.0|^7.0",
+        "cviebrock/eloquent-sluggable": "^7.0"
     },
     "autoload": {
         "psr-4": {
+            "Marqant\\MarqantPay\\Seeds\\": "database/seeds/",
             "Marqant\\MarqantPay\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Marqant\\MarqantPay\\MarqantPayServiceProvider"
-            ]
+        },
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Marqant\\MarqantPay\\MarqantPayServiceProvider"
+                ]
+            }
         }
     }
 }

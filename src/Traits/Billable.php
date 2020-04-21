@@ -51,6 +51,20 @@ trait Billable
     }
 
     /**
+     * Charge the Billable for a given amount.
+     *
+     * @param int $amount
+     *
+     * @return \Illuminate\Database\Eloquent\Model|$this
+     */
+    private function charge(array $payment_method): Model
+    {
+        MarqantPayService::charge($this, $payment_method);
+
+        return $this;
+    }
+
+    /**
      * Create customer at the payment provider.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
