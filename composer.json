@@ -1,0 +1,27 @@
+{
+    "name": "marqant/marqant-pay",
+    "description": "A flexible payment provider implementation by Marqant.",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Venturini",
+            "email": "thomas@du.digital"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marqant\\MarqantPay\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Marqant\\MarqantPay\\MarqantPayServiceProvider"
+            ]
+        }
+    }
+}
