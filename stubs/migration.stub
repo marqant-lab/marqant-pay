@@ -13,7 +13,7 @@ class {{CLASS_NAME}} extends Migration
      */
     public function up()
     {
-        Schema::create('{{TABLE_NAME}}', function (Blueprint $table) {
+        Schema::table('{{TABLE_NAME}}', function (Blueprint $table) {
             $table->string('marqant_pay_provider')->nullable();
             $table->string('marqant_pay_provider_id')->nullable();
             $table->string('marqant_pay_card_brand')->nullable();
