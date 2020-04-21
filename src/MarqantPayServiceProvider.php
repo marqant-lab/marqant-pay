@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay;
 
 use Illuminate\Support\ServiceProvider;
+use Marqant\MarqantPay\Commands\MigrationsForBillable;
 
 class MarqantPayServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,8 @@ class MarqantPayServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->setupMigrations();
+
+        $this->setupCommands();
     }
 
     /**
@@ -44,5 +47,19 @@ class MarqantPayServiceProvider extends ServiceProvider
     private function setupMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
+
+    /**
+     * Setup commands in boot method.
+     *
+     * @return void
+     */
+    private function setupCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MigrationsForBillable::class,
+            ]);
+        }
     }
 }
