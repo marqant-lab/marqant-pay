@@ -4,6 +4,7 @@ namespace Marqant\MarqantPay\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
+use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
 class MarqantPayService
 {
@@ -30,8 +31,17 @@ class MarqantPayService
         return $Billable;
     }
 
-    private static function resolveProviderGateway(Model $Billable)
+    /**
+     * Resolve the payment provider of a billable model.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentGatewayContract
+     */
+    public static function resolveProviderGateway(Model $Billable): PaymentGatewayContract
     {
-        ddi($Billable->provider);
+        $gateway = config('marqant-pay.gateways.' . $Billable->marqant_pay_provider, null);
+
+        return app($gateway);
     }
 }
