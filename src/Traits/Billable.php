@@ -8,6 +8,20 @@ use Marqant\MarqantPay\Services\MarqantPayService;
 trait Billable
 {
     /**
+     * Charge the Billable for a given amount.
+     *
+     * @param int $amount
+     *
+     * @return \Illuminate\Database\Eloquent\Model|$this
+     */
+    private function charge(int $amount): Model
+    {
+        MarqantPayService::charge($this, $amount);
+
+        return $this;
+    }
+
+    /**
      * Save payment method to billable model.
      *
      * @param array $payment_method
@@ -32,20 +46,6 @@ trait Billable
     private function removePaymentMethod(array $payment_method): Model
     {
         MarqantPayService::removePaymentMethod($this, $payment_method);
-
-        return $this;
-    }
-
-    /**
-     * Charge the Billable for a given amount.
-     *
-     * @param int $amount
-     *
-     * @return \Illuminate\Database\Eloquent\Model|$this
-     */
-    private function charge(int $amount): Model
-    {
-        MarqantPayService::charge($this, $amount);
 
         return $this;
     }

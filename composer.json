@@ -12,12 +12,21 @@
     "require": {
         "illuminate/support": "^6.0|^7.0",
         "cviebrock/eloquent-sluggable": "^7.0",
-        "i-rocky/eloquent-dynamic-relation": "^1.0"
+        "i-rocky/eloquent-dynamic-relation": "^1.0",
+        "moneyphp/money": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0|^9.0"
     },
     "autoload": {
         "psr-4": {
             "Marqant\\MarqantPay\\Seeds\\": "database/seeds/",
             "Marqant\\MarqantPay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Marqant\\MarqantPay\\Tests\\": "tests/"
         }
     },
     "extra": {
