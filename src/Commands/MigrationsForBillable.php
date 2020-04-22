@@ -228,7 +228,7 @@ class MigrationsForBillable extends Command
             });
 
         if ($files->contains($file)) {
-            $this->error("Migration for marqant fields on {$table} already exists.");
+            $this->error("Migration for marqant pay fields on {$table} already exists.");
             exit(1);
         }
     }

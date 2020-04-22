@@ -3,7 +3,7 @@
 namespace Marqant\MarqantPay\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Marqant\MarqantPaySubscriptions\Models\Relationships\BelongsToManyPlans;
+use Marqant\MarqantPay\Traits\RepresentsProvider;
 
 /**
  * Class Provider
@@ -12,7 +12,7 @@ use Marqant\MarqantPaySubscriptions\Models\Relationships\BelongsToManyPlans;
  */
 class Provider extends Model
 {
-    use BelongsToManyPlans;
+    use RepresentsProvider;
 
     /**
      * The attributes that aren't mass assignable.
