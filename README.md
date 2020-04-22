@@ -96,4 +96,17 @@ TODO!
 
 ## Development
 
-TODO!
+TODO: Explain setup of development environment.
+
+TODO: Add section for creating new payment providers.
+
+### Extending the MarqantPayService
+
+To extend the `MarqantPayService` class, which is what you use behind the scenes when using the MarqantPay facade
+, you can create a Macro and attach it in the service provider of your package though the `mixin` method provided by
+ the Macroable trait.
+ 
+* [See API Documentation](https://laravel.com/api/7.x/Illuminate/Support/Traits/Macroable.html)
+
+**Note** that you have to take care of your extensions, so only one macro of a kind is required. For example if two
+ extensions would provide the macro for `MarqantPayService::subscribe` method, only one of those would be registered.

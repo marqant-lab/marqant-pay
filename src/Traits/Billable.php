@@ -8,20 +8,6 @@ use Marqant\MarqantPay\Services\MarqantPayService;
 trait Billable
 {
     /**
-     * Subscribe billable model to a plan.
-     *
-     * @param string $plan
-     *
-     * @return \Illuminate\Database\Eloquent\Model|$this
-     */
-    public function subscribe(string $plan): Model
-    {
-        MarqantPayService::subscribe($this, $plan);
-
-        return $this;
-    }
-
-    /**
      * Save payment method to billable model.
      *
      * @param array $payment_method
@@ -60,6 +46,21 @@ trait Billable
     private function charge(int $amount): Model
     {
         MarqantPayService::charge($this, $amount);
+
+        return $this;
+    }
+
+    /**
+     * Subscribe billable model to a plan.
+     *
+     * @param string $plan
+     *
+     * @return \Illuminate\Database\Eloquent\Model|$this
+     */
+    public function subscribe(string $plan): Model
+    {
+        if (class_exists())
+        MarqantPayService::subscribe($this, $plan);
 
         return $this;
     }
