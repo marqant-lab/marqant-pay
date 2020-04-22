@@ -17,13 +17,13 @@
         "psr-4": {
             "Marqant\\MarqantPay\\Seeds\\": "database/seeds/",
             "Marqant\\MarqantPay\\": "src/"
-        },
-        "extra": {
-            "laravel": {
-                "providers": [
-                    "Marqant\\MarqantPay\\MarqantPayServiceProvider"
-                ]
-            }
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Marqant\\MarqantPay\\MarqantPayServiceProvider"
+            ]
         }
     }
 }

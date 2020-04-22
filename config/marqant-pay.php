@@ -38,16 +38,4 @@ return [
 
     'provider_model' => \Marqant\MarqantPay\Models\Provider::class,
 
-    /*
-     |--------------------------------------------------------------------------
-     | Plan Model
-     |--------------------------------------------------------------------------
-     |
-     | This is the model used as representation of the plans at your payment
-     | provider. Plans also are managed through the gateways.
-     |
-     */
-
-    'plan_model' => \Marqant\MarqantPay\Models\Plan::class,
-
 ];

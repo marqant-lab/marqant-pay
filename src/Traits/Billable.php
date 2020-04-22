@@ -59,8 +59,9 @@ trait Billable
      */
     public function subscribe(string $plan): Model
     {
-        if (class_exists())
-        MarqantPayService::subscribe($this, $plan);
+        if (method_exists(MarqantPayService::class, 'subscribe')) {
+            MarqantPayService::subscribe($this, $plan);
+        }
 
         return $this;
     }

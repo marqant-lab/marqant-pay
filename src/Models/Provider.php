@@ -3,7 +3,7 @@
 namespace Marqant\MarqantPay\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Marqant\MarqantPay\Models\Relationships\BelongsToManyPlans;
+use Marqant\MarqantPaySubscriptions\Models\Relationships\BelongsToManyPlans;
 
 /**
  * Class Provider
