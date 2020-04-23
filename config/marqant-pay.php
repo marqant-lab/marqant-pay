@@ -38,4 +38,15 @@ return [
 
     'provider_model' => \Marqant\MarqantPay\Models\Provider::class,
 
+    /*
+     |--------------------------------------------------------------------------
+     | Payment Model
+     |--------------------------------------------------------------------------
+     |
+     | This is the model used as representation of the payments in our database.
+     |
+     */
+
+    'payment_model' => \Marqant\MarqantPay\Models\Payment::class,
+
 ];
