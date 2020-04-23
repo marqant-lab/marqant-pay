@@ -8,17 +8,32 @@ use Marqant\MarqantPay\Services\MarqantPayService;
 trait Billable
 {
     /**
+     * Create a customer on the provider end.
+     *
+     * @param string $provider
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public function createCustomer(string $provider): Model
+    {
+        /** @var Model $this */
+        return MarqantPayService::createCustomer($this, $provider);
+    }
+
+    /**
      * Charge the Billable for a given amount.
      *
      * @param int $amount
      *
-     * @return \Illuminate\Database\Eloquent\Model|$this
+     * @return \Marqant\MarqantPay\Models\Payment
+     *
+     * @throws \Exception
      */
-    private function charge(int $amount): Model
+    private function charge(int $amount): Payment
     {
-        MarqantPayService::charge($this, $amount);
-
-        return $this;
+        return MarqantPayService::charge($this, $amount);
     }
 
     /**

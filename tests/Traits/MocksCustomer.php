@@ -18,9 +18,19 @@ trait MocksCustomer
      */
     protected function createCustomer(array $options = []): Model
     {
-        $default_data = [
-            'marqant_pay_provider' => 'stripe',
-        ];
+        $default_data = [];
+
+        return factory(\App\User::class)->create(array_merge($default_data, $options));
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    protected function createAssignedCustomer(array $options = []): Model
+    {
+        $default_data = [];
 
         return factory(\App\User::class)->create(array_merge($default_data, $options));
     }
