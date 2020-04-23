@@ -15,6 +15,8 @@ class MarqantPayServiceProvider extends ServiceProvider
     public function register()
     {
         $this->setupConfig();
+
+        $this->setupFacades();
     }
 
     /**
@@ -61,5 +63,14 @@ class MarqantPayServiceProvider extends ServiceProvider
                 MigrationsForBillable::class,
             ]);
         }
+    }
+
+    /**
+     * Method to setup facades of this package.
+     *
+     * @return void
+     */
+    private function setupFacades()
+    {
     }
 }

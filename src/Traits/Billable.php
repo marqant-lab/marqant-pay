@@ -3,7 +3,7 @@
 namespace Marqant\MarqantPay\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Marqant\MarqantPay\Services\MarqantPayService;
+use Marqant\MarqantPay\Services\MarqantPay;
 
 trait Billable
 {
@@ -19,7 +19,7 @@ trait Billable
     public function createCustomer(string $provider): Model
     {
         /** @var Model $this */
-        return MarqantPayService::createCustomer($this, $provider);
+        return MarqantPay::createCustomer($this, $provider);
     }
 
     /**
@@ -33,7 +33,7 @@ trait Billable
      */
     private function charge(int $amount): Payment
     {
-        return MarqantPayService::charge($this, $amount);
+        return MarqantPay::charge($this, $amount);
     }
 
     /**
@@ -46,7 +46,7 @@ trait Billable
     // TODO: create object for payment method
     private function savePaymentMethod(array $payment_method): Model
     {
-        MarqantPayService::savePaymentMethod($this, $payment_method);
+        MarqantPay::savePaymentMethod($this, $payment_method);
 
         return $this;
     }
@@ -60,7 +60,7 @@ trait Billable
      */
     private function removePaymentMethod(array $payment_method): Model
     {
-        MarqantPayService::removePaymentMethod($this, $payment_method);
+        MarqantPay::removePaymentMethod($this, $payment_method);
 
         return $this;
     }
@@ -74,8 +74,8 @@ trait Billable
      */
     public function subscribe(string $plan): Model
     {
-        if (method_exists(MarqantPayService::class, 'subscribe')) {
-            MarqantPayService::subscribe($this, $plan);
+        if (method_exists(MarqantPay::class, 'subscribe')) {
+            MarqantPay::subscribe($this, $plan);
         }
 
         return $this;

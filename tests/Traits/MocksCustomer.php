@@ -30,7 +30,11 @@ trait MocksCustomer
      */
     protected function createAssignedCustomer(array $options = []): Model
     {
-        $default_data = [];
+        $default_data = [
+            'email'                => 'bauch.blanca@example.org',
+            'marqant_pay_provider' => 'stripe',
+            'stripe_id'            => 'cus_H9OBNVPV8VCLml',
+        ];
 
         return factory(\App\User::class)->create(array_merge($default_data, $options));
     }

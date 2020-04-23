@@ -5,9 +5,10 @@ namespace Marqant\MarqantPay\Services;
 use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
+use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
-class MarqantPayService
+class MarqantPay
 {
     /**
      * We make use of the Macroable trait to make this service extendable. That way, other packages can bring in
@@ -71,6 +72,8 @@ class MarqantPayService
     }
 
     /**
+     * Validate a provider string against the configuration.
+     *
      * @param string $provider
      *
      * @return void
@@ -85,4 +88,31 @@ class MarqantPayService
             throw new \Exception('Provider not available.');
         }
     }
+
+    /**
+     * Resolve a incoming payment method data to object.
+     *
+     * @param string $type
+     * @param array  $details
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     *
+     * @throws \Exception
+     */
+    private static function resolvePaymentMethod(string $type, array $details = []): PaymentMethodContract
+    {
+        $resolver = config('marqant-pay.payment_methods.' . $type, null);
+
+        if (!$resolver) {
+            throw new \Exception("Could not resolve given payment method: '{$type}'");
+        }
+
+        if (!$resolver instanceof PaymentMethodContract) {
+            $message = "Resolver for payment method {$type} does not implement the payment method contract.";
+            throw new \Exception($message);
+        }
+
+        return new $resolver($details);
+    }
+
 }

@@ -3,7 +3,7 @@
 namespace Marqant\MarqantPay\Tests\Services;
 
 use Marqant\MarqantPay\Tests\MarqantPayTestCase;
-use Marqant\MarqantPay\Services\MarqantPayService;
+use Marqant\MarqantPay\Services\MarqantPay;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
 /**
@@ -11,7 +11,7 @@ use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
  *
  * @package Marqant\MarqantPay\Tests
  */
-class MarqantPayServiceTest extends MarqantPayTestCase
+class MarqantPayTest extends MarqantPayTestCase
 {
     /**
      * Test if we can resolve the gateway provider from a billable.
@@ -25,7 +25,7 @@ class MarqantPayServiceTest extends MarqantPayTestCase
     {
         $User = $this->createCustomer();
 
-        $Gateway = MarqantPayService::resolveProviderGateway($User);
+        $Gateway = MarqantPay::resolveProviderGateway($User);
 
         $this->assertInstanceOf(PaymentGatewayContract::class, $Gateway);
     }
@@ -52,6 +52,34 @@ class MarqantPayServiceTest extends MarqantPayTestCase
 
         // assert that we have a stripe id
         $this->assertNotEmpty($User->stripe_id);
+    }
+
+    /**
+     * Test if we can save a payment method to the user.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function test_saving_payment_method_on_billable(): void
+    {
+        $provider = 'stripe';
+
+        // create fake customer through factory
+        $User = $this->createCustomer();
+
+        // create customer on provider side
+        $User->createCustomer($provider);
+
+        // create sample payment method
+        $PaymentMethod = $this->createPaymentMethod();
+
+        // save payment method to billable
+        $User->savePaymentMethod($PaymentMethod);
+
+        // assert that we have a payment method on the user
+
+        // assert that the payment method has a stripe token
     }
 
     /**

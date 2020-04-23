@@ -28,6 +28,20 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Payment Methods
+     |--------------------------------------------------------------------------
+     |
+     | In this section you can define the payment methods available through the
+     | providers you pulled in.
+     |
+     */
+
+    'payment_methods' => [
+        'card' => \Marqant\MarqantPayStripe\PaymentMethods\Card::class,
+    ],
+
+    /*
+     |--------------------------------------------------------------------------
      | Provider Model
      |--------------------------------------------------------------------------
      |
