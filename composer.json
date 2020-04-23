@@ -21,12 +21,8 @@
     "autoload": {
         "psr-4": {
             "Marqant\\MarqantPay\\Seeds\\": "database/seeds/",
+            "Marqant\\MarqantPay\\Tests\\": "tests/",
             "Marqant\\MarqantPay\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Marqant\\MarqantPay\\Tests\\": "tests/"
         }
     },
     "extra": {

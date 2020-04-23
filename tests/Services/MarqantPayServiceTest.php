@@ -1,9 +1,8 @@
 <?php
 
-namespace Marqant\MarqantPay\Tests;
+namespace Marqant\MarqantPay\Tests\Services;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Marqant\MarqantPay\Tests\MarqantPayTestCase;
 use Marqant\MarqantPay\Services\MarqantPayService;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
@@ -12,20 +11,16 @@ use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
  *
  * @package Marqant\MarqantPay\Tests
  */
-class MarqantPayServiceTest extends TestCase
+class MarqantPayServiceTest extends MarqantPayTestCase
 {
-    use RefreshDatabase;
-
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function test_if_we_can_resolve_a_the_provider()
+    public function test_if_we_can_resolve_the_provider_from_billable()
     {
-        $User = factory(\App\User::class)->make([
-            'marqant_pay_provider' => 'stripe',
-        ]);
+        $User = $this->createCustomer();
 
         $Gateway = MarqantPayService::resolveProviderGateway($User);
 
