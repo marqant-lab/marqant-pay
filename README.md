@@ -92,7 +92,14 @@ Subscriptions are managed through the payment provider gateway that you pull in.
 
 ## Tests
 
-TODO!
+To run tests, you first need to set up a sqlite database that we use to get snapshots of the database state. Run the
+ following command from within your project root to create the sqlite database.
+ 
+```shell script
+touch database/database.sqlite
+```
+
+TODO: Finish documentation of testing.
 
 ## Development
 
