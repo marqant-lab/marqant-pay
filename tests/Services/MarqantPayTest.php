@@ -2,8 +2,8 @@
 
 namespace Marqant\MarqantPay\Tests\Services;
 
-use Marqant\MarqantPay\Tests\MarqantPayTestCase;
 use Marqant\MarqantPay\Services\MarqantPay;
+use Marqant\MarqantPay\Tests\MarqantPayTestCase;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
 /**
@@ -60,9 +60,16 @@ class MarqantPayTest extends MarqantPayTestCase
      * @test
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function test_saving_payment_method_on_billable(): void
     {
+        /**
+         * @var \App\User $User
+         */
+
+        // set provider string
         $provider = 'stripe';
 
         // create fake customer through factory
@@ -78,8 +85,19 @@ class MarqantPayTest extends MarqantPayTestCase
         $User->savePaymentMethod($PaymentMethod);
 
         // assert that we have a payment method on the user
+        $this->assertTrue($User->hasPaymentMethod());
 
-        // assert that the payment method has a stripe token
+        // assert that the payment method belongs to the user
+        $this->assertEquals($User->stripe_id, $PaymentMethod->object->customer);
+
+        // assert that the brand matches
+        $this->assertEquals($User->marqant_pay_card_brand, $PaymentMethod->object->card->brand);
+
+        // assert that the last four digits saved match
+        $this->assertEquals($User->marqant_pay_card_last_four, $PaymentMethod->object->card->last4);
+
+        // assert that we can get the payment method back from the billable
+        $this->assertInstanceOf(config('marqant-pay.payment_methods.card'), $User->getPaymentMethod());
     }
 
     /**

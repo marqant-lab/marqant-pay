@@ -14,7 +14,8 @@
         "cviebrock/eloquent-sluggable": "^7.0",
         "i-rocky/eloquent-dynamic-relation": "^1.0",
         "moneyphp/money": "^3.2",
-        "php": "^7.4"
+        "php": "^7.4",
+        "spatie/data-transfer-object": "^1.13"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0"

@@ -2,7 +2,6 @@
 
 namespace Marqant\MarqantPay\Tests\Traits;
 
-use Illuminate\Support\Carbon;
 use Marqant\MarqantPay\Services\MarqantPay;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 
@@ -25,15 +24,7 @@ trait MocksPaymentMethods
         $type = 'card';
 
         $details = [
-            'type' => 'card',
-            'card' => [
-                'number'    => '4242424242424242',
-                'exp_month' => 4,
-                'exp_year'  => Carbon::now()
-                    ->addYear()
-                    ->format('Y'),
-                'cvc'       => '314',
-            ],
+            'token' => 'pm_card_visa',
         ];
 
         return MarqantPay::resolvePaymentMethod($type, $details);

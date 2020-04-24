@@ -2,6 +2,8 @@
 
 namespace Marqant\MarqantPay\Services;
 
+use Exception;
+use ReflectionClass;
 use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
@@ -66,9 +68,7 @@ class MarqantPay
     {
         $ProviderGateway = self::resolveProviderGateway($Billable);
 
-        $Payment = $ProviderGateway->charge($Billable, $amount);
-
-        return $Payment;
+        return $ProviderGateway->charge($Billable, $amount);
     }
 
     /**
@@ -82,10 +82,10 @@ class MarqantPay
      */
     private static function validateProvider(string $provider): void
     {
-        $providers = config('marqant-pay.gateways.' . $provider, null);
+        $found_provider = config('marqant-pay.gateways.' . $provider, false);
 
-        if (!$provider) {
-            throw new \Exception('Provider not available.');
+        if (!$found_provider) {
+            throw new Exception('Provider not available.');
         }
     }
 
@@ -99,20 +99,84 @@ class MarqantPay
      *
      * @throws \Exception
      */
-    private static function resolvePaymentMethod(string $type, array $details = []): PaymentMethodContract
+    public static function resolvePaymentMethod(string $type, array $details = []): PaymentMethodContract
     {
         $resolver = config('marqant-pay.payment_methods.' . $type, null);
 
         if (!$resolver) {
-            throw new \Exception("Could not resolve given payment method: '{$type}'");
+            throw new Exception("Could not resolve given payment method: '{$type}'");
         }
 
-        if (!$resolver instanceof PaymentMethodContract) {
-            $message = "Resolver for payment method {$type} does not implement the payment method contract.";
-            throw new \Exception($message);
-        }
+        self::checkImplementationOfPaymentMethod($type, $resolver);
 
         return new $resolver($details);
+    }
+
+    /**
+     * Check that the payment method provided in the configuration implements the PaymentMethodContract class.
+     *
+     * @param string      $type
+     * @param string|null $resolver
+     *
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
+    private static function checkImplementationOfPaymentMethod(string $type, ?string $resolver): void
+    {
+        $contract = PaymentMethodContract::class;
+
+        if (!(new ReflectionClass($resolver))->isSubclassOf($contract)) {
+            $message = "Resolver for payment method {$type} does not implement {$contract}";
+            throw new Exception($message);
+        }
+    }
+
+    /**
+     * Saves a payment method on the billable.
+     *
+     * @param \Illuminate\Database\Eloquent\Model                 $Billable
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function savePaymentMethod(Model $Billable, PaymentMethodContract $PaymentMethod)
+    {
+        $ProviderGateway = self::resolveProviderGateway($Billable);
+
+        $ProviderGateway->savePaymentMethod($Billable, $PaymentMethod);
+
+        return $Billable;
+    }
+
+    /**
+     * Check if billable has a payment method attached.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public static function hasPaymentMethod(Model $Billable): bool
+    {
+        $ProviderGateway = self::resolveProviderGateway($Billable);
+
+        return $ProviderGateway->hasPaymentMethod($Billable);
+    }
+
+    /**
+     * Check if billable has a payment method attached.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     * @throws \Exception
+     */
+    public static function getPaymentMethodOfBillable(Model $Billable): PaymentMethodContract
+    {
+        $ProviderGateway = self::resolveProviderGateway($Billable);
+
+        return $ProviderGateway->getPaymentMethodOfBillable($Billable);
     }
 
 }

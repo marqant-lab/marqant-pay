@@ -4,6 +4,7 @@ namespace Marqant\MarqantPay\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Marqant\MarqantPay\Services\MarqantPay;
+use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 
 trait Billable
 {
@@ -39,16 +40,38 @@ trait Billable
     /**
      * Save payment method to billable model.
      *
-     * @param array $payment_method
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model|$this
+     * @throws \Exception
      */
-    // TODO: create object for payment method
-    private function savePaymentMethod(array $payment_method): Model
+    public function savePaymentMethod(PaymentMethodContract $PaymentMethod): Model
     {
-        MarqantPay::savePaymentMethod($this, $payment_method);
+        MarqantPay::savePaymentMethod($this, $PaymentMethod);
 
         return $this;
+    }
+
+    /**
+     * Check if billable has a payment method attached.
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasPaymentMethod(): bool
+    {
+        return MarqantPay::hasPaymentMethod($this);
+    }
+
+    /**
+     * Get the payment method of the billable.
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     * @throws \Exception
+     */
+    public function getPaymentMethod(): PaymentMethodContract
+    {
+        return MarqantPay::getPaymentMethodOfBillable($this);
     }
 
     /**

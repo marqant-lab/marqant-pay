@@ -40,12 +40,12 @@ abstract class PaymentGatewayContract
     /**
      * Save the provided payment method to the given Billable on the payment provider side.
      *
-     * @param \Illuminate\Database\Eloquent\Model $Billable
-     * @param array                               $payment_method
+     * @param \Illuminate\Database\Eloquent\Model                 $Billable
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function savePaymentMethod(Model $Billable, array $payment_method): Model;
+    public abstract function savePaymentMethod(Model $Billable, PaymentMethodContract $PaymentMethod): Model;
 
     /**
      * Remove the provided payment method from the given Billable on the payment provider side.
@@ -56,4 +56,22 @@ abstract class PaymentGatewayContract
      * @return \Illuminate\Database\Eloquent\Model
      */
     public abstract function removePaymentMethod(Model $Billable, array $payment_method): Model;
+
+    /**
+     * Check if billable has a payment method attached.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return bool
+     */
+    public abstract function hasPaymentMethod(Model $Billable): bool;
+
+    /**
+     * Check if billable has a payment method attached.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     */
+    public abstract function getPaymentMethodOfBillable(Model $Billable): PaymentMethodContract;
 }
