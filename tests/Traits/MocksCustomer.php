@@ -16,7 +16,7 @@ trait MocksCustomer
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function createCustomer(array $options = []): Model
+    protected function createUser(array $options = []): Model
     {
         $default_data = [];
 
@@ -27,15 +27,29 @@ trait MocksCustomer
      * @param array $options
      *
      * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
      */
-    protected function createAssignedCustomer(array $options = []): Model
+    protected function createBillableUser(array $options = []): Model
     {
-        $default_data = [
-            'email'                => 'bauch.blanca@example.org',
-            'marqant_pay_provider' => 'stripe',
-            'stripe_id'            => 'cus_H9OBNVPV8VCLml',
-        ];
+        /**
+         * @var \Marqant\MarqantPay\Tests\Services\MarqantPayTest $this
+         * @var \App\User                                         $Billable
+         */
 
-        return factory(\App\User::class)->create(array_merge($default_data, $options));
+        $provider = 'stripe';
+
+        // create empty customer
+        $Billable = $this->createUser();
+
+        // create customer on provider side
+        $Billable->createCustomer($provider);
+
+        // create sample payment method
+        $PaymentMethod = $this->createPaymentMethod();
+
+        $Billable->savePaymentMethod($PaymentMethod);
+
+        return $Billable;
     }
 }

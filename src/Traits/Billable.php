@@ -4,6 +4,7 @@ namespace Marqant\MarqantPay\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Marqant\MarqantPay\Services\MarqantPay;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 
 trait Billable
@@ -26,15 +27,16 @@ trait Billable
     /**
      * Charge the Billable for a given amount.
      *
-     * @param int $amount
+     * @param int                                                      $amount
+     * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
-     * @return \Marqant\MarqantPay\Models\Payment
+     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    private function charge(int $amount): Payment
+    public function charge(int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
     {
-        return MarqantPay::charge($this, $amount);
+        return MarqantPay::charge($this, $amount, $PaymentMethod);
     }
 
     /**
@@ -104,5 +106,15 @@ trait Billable
         }
 
         return $this;
+    }
+
+    /**
+     * Establish a relationship to the payments model from any billable.
+     */
+    public function payments(): MorphMany
+    {
+        $model = config('marqant-pay.payment_model');
+
+        return $this->morphMany($model, 'billable');
     }
 }

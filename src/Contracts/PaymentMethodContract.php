@@ -2,12 +2,24 @@
 
 namespace Marqant\MarqantPay\Contracts;
 
+use Exception;
+
+/**
+ * Class PaymentMethodContract
+ *
+ * @package Marqant\MarqantPay\Contracts
+ */
 abstract class PaymentMethodContract
 {
     /**
      * @var string The type of this payment.
      */
     protected string $type;
+
+    /**
+     * @var string The provider to use with this payment method.
+     */
+    protected string $provider;
 
     /**
      * @var string
@@ -62,5 +74,24 @@ abstract class PaymentMethodContract
             'provider_object' => $this->provider_object,
             'object'          => $this->object,
         ];
+    }
+
+    /**
+     * Getter for private and protected attributes of this object.
+     *
+     * @param $key
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function __get($key)
+    {
+        if (!$key || !isset($this->$key)) {
+            $class = get_class($this);
+            throw new Exception("No attribute {$key} available on {$class}.");
+        }
+
+        return $this->$key;
     }
 }

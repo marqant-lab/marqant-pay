@@ -2,8 +2,8 @@
 
 namespace Marqant\MarqantPay\Contracts;
 
-use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
+use Marqant\MarqantPay\Services\MarqantPay;
 
 abstract class PaymentGatewayContract
 {
@@ -19,13 +19,13 @@ abstract class PaymentGatewayContract
     /**
      * Charge a given billable for a given amount.
      *
-     * @param \Illuminate\Database\Eloquent\Model $Billable
+     * @param \Illuminate\Database\Eloquent\Model                      $Billable
+     * @param int                                                      $amount
+     * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
-     * @param int                                 $amount
-     *
-     * @return \Marqant\MarqantPay\Models\Payment
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function charge(Model $Billable, int $amount): Payment;
+    public abstract function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model;
 
     /**
      * Subscribe a given Billable to a plan on the payment provider side.
@@ -74,4 +74,12 @@ abstract class PaymentGatewayContract
      * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
      */
     public abstract function getPaymentMethodOfBillable(Model $Billable): PaymentMethodContract;
+
+    /**
+     * Method to get the currency to use. Feel free to overwrite depending on the provider implementation.
+     */
+    public function getCurrency(): string
+    {
+        return MarqantPay::getCurrency();
+    }
 }

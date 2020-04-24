@@ -23,7 +23,11 @@ class MarqantPayTest extends MarqantPayTestCase
      */
     public function test_if_we_can_resolve_the_provider_from_billable()
     {
-        $User = $this->createCustomer();
+        /**
+         * @var \App\User $User
+         */
+
+        $User = $this->createBillableUser();
 
         $Gateway = MarqantPay::resolveProviderGateway($User);
 
@@ -36,13 +40,18 @@ class MarqantPayTest extends MarqantPayTestCase
      * @test
      *
      * @return void
+     * @throws \Exception
      */
     public function test_create_customer_from_billable()
     {
+        /**
+         * @var \App\User $User
+         */
+
         $provider = 'stripe';
 
         // create fake customer through factory
-        $User = $this->createCustomer();
+        $User = $this->createUser();
 
         // create customer on provider side
         $User->createCustomer($provider);
@@ -73,7 +82,7 @@ class MarqantPayTest extends MarqantPayTestCase
         $provider = 'stripe';
 
         // create fake customer through factory
-        $User = $this->createCustomer();
+        $User = $this->createUser();
 
         // create customer on provider side
         $User->createCustomer($provider);
@@ -119,7 +128,7 @@ class MarqantPayTest extends MarqantPayTestCase
         $provider = 'stripe';
 
         // create fake customer through factory
-        $User = $this->createCustomer();
+        $User = $this->createUser();
 
         // create customer on provider side
         $User->createCustomer($provider);
@@ -149,29 +158,65 @@ class MarqantPayTest extends MarqantPayTestCase
      * @test
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function test_billable_can_be_charged()
     {
+        /**
+         * @var \App\User $User
+         */
+
         $amount = 999; // 9,99 ($|€|...)
 
-        $provider = 'stripe';
-
         // create fake customer through factory
-        $User = $this->createCustomer();
-
-        // create customer on provider side
-        $User->createCustomer($provider);
+        $User = $this->createBillableUser();
 
         // charge the user
-        $response = $User->charge($amount);
+        $Payment = $User->charge($amount);
 
         // check that we got back an instance of Payment
-        $this->assertInstanceOf(Payment::class, $response);
+        $this->assertInstanceOf(config('marqant-pay.payment_model'), $Payment);
 
         // check the amount
-        $this->assertEquals($amount, $response->amount);
+        $this->assertEquals($amount, $Payment->amount);
 
         // check if we billed the correct user
-        $this->assertEquals($User->provider_id, $response->customer);
+        $this->assertEquals($User->provider_id, $Payment->customer);
+    }
+
+    /**
+     * Test if we can charge a billable that has no default payment method assigned.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_billable_without_setup_can_be_charged()
+    {
+        /**
+         * @var \App\User $User
+         */
+
+        $amount = 999; // 9,99 ($|€|...)
+
+        // create fake customer through factory
+        $User = $this->createUser();
+
+        $PaymentMethod = $this->createPaymentMethod();
+
+        // charge the user
+        $Payment = $User->charge($amount, $PaymentMethod);
+
+        // check that we got back an instance of Payment
+        $this->assertInstanceOf(config('marqant-pay.payment_model'), $Payment);
+
+        // check the amount
+        $this->assertEquals($amount, $Payment->amount);
+
+        // check if we billed the correct user
+        $this->assertNull($Payment->customer);
     }
 }

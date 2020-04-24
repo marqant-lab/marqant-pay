@@ -4,7 +4,6 @@ namespace Marqant\MarqantPay\Services;
 
 use Exception;
 use ReflectionClass;
-use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
@@ -21,16 +20,24 @@ class MarqantPay
     /**
      * Resolve the payment provider of a billable model.
      *
-     * @param \Illuminate\Database\Eloquent\Model $Billable
+     * @param \Illuminate\Database\Eloquent\Model                      $Billable
+     * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Marqant\MarqantPay\Contracts\PaymentGatewayContract
      * @throws \Exception
      */
-    public static function resolveProviderGateway(Model $Billable): PaymentGatewayContract
+    public static function resolveProviderGateway(Model $Billable,
+                                                  ?PaymentMethodContract $PaymentMethod = null): PaymentGatewayContract
     {
-        self::validateProvider($Billable->marqant_pay_provider);
+        $provider = $Billable->marqant_pay_provider;
 
-        $gateway = config('marqant-pay.gateways.' . $Billable->marqant_pay_provider, null);
+        if ($PaymentMethod) {
+            $provider = $PaymentMethod->provider;
+        }
+
+        self::validateProvider($provider);
+
+        $gateway = config("marqant-pay.gateways.{$provider}", null);
 
         return app($gateway);
     }
@@ -58,30 +65,36 @@ class MarqantPay
     /**
      * Charge the billable through the payment provider associated with the user.
      *
-     * @param \Illuminate\Database\Eloquent\Model $Billable
-     * @param int                                 $amount
+     * @param \Illuminate\Database\Eloquent\Model                      $Billable
+     * @param int                                                      $amount
+     * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
-     * @return \Marqant\MarqantPay\Models\Payment
+     * @return \Illuminate\Database\Eloquent\Model
+     *
      * @throws \Exception
      */
-    public static function charge(Model $Billable, int $amount): Payment
+    public static function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
     {
-        $ProviderGateway = self::resolveProviderGateway($Billable);
+        $ProviderGateway = self::resolveProviderGateway($Billable, $PaymentMethod);
 
-        return $ProviderGateway->charge($Billable, $amount);
+        return $ProviderGateway->charge($Billable, $amount, $PaymentMethod);
     }
 
     /**
      * Validate a provider string against the configuration.
      *
-     * @param string $provider
+     * @param null|string $provider
      *
      * @return void
      *
      * @throws \Exception
      */
-    private static function validateProvider(string $provider): void
+    private static function validateProvider(?string $provider): void
     {
+        if (!$provider) {
+            throw new Exception("No provider ... 'provided' 😉");
+        }
+
         $found_provider = config('marqant-pay.gateways.' . $provider, false);
 
         if (!$found_provider) {
@@ -199,6 +212,11 @@ class MarqantPay
         $ProviderGateway = self::resolveProviderGateway($Billable);
 
         return $ProviderGateway->removePaymentMethod($Billable, $PaymentMethod);
+    }
+
+    public static function getCurrency()
+    {
+        return config('marqant-pay.default_currency');
     }
 
 }

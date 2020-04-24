@@ -63,4 +63,15 @@ return [
 
     'payment_model' => \Marqant\MarqantPay\Models\Payment::class,
 
+    /*
+     |--------------------------------------------------------------------------
+     | Currencies
+     |--------------------------------------------------------------------------
+     |
+     | In this section you can setup the currencies that you want to use.
+     |
+     */
+
+    'default_currency' => env('MARQANT_PAY_CURRENCY', 'eur'),
+
 ];
