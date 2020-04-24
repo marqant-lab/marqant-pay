@@ -14,7 +14,7 @@ abstract class PaymentGatewayContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function createCustomer(Model $Billable): Model;
+    public abstract function createCustomer(Model &$Billable): Model;
 
     /**
      * Charge a given billable for a given amount.
@@ -35,7 +35,7 @@ abstract class PaymentGatewayContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function subscribe(Model $Billable, Model $Plan): Model;
+    public abstract function subscribe(Model &$Billable, Model $Plan): Model;
 
     /**
      * Save the provided payment method to the given Billable on the payment provider side.
@@ -45,17 +45,17 @@ abstract class PaymentGatewayContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function savePaymentMethod(Model $Billable, PaymentMethodContract $PaymentMethod): Model;
+    public abstract function savePaymentMethod(Model &$Billable, PaymentMethodContract $PaymentMethod): Model;
 
     /**
      * Remove the provided payment method from the given Billable on the payment provider side.
      *
-     * @param \Illuminate\Database\Eloquent\Model $Billable
-     * @param array                               $payment_method
+     * @param \Illuminate\Database\Eloquent\Model                 $Billable
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function removePaymentMethod(Model $Billable, array $payment_method): Model;
+    public abstract function removePaymentMethod(Model &$Billable, PaymentMethodContract $PaymentMethod): Model;
 
     /**
      * Check if billable has a payment method attached.

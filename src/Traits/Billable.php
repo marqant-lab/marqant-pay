@@ -77,13 +77,15 @@ trait Billable
     /**
      * Remove payment method from billable model.
      *
-     * @param array $payment_method
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
-     * @return \Illuminate\Database\Eloquent\Model|$this
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
      */
-    private function removePaymentMethod(array $payment_method): Model
+    public function removePaymentMethod(PaymentMethodContract $PaymentMethod): Model
     {
-        MarqantPay::removePaymentMethod($this, $payment_method);
+        MarqantPay::removePaymentMethod($this, $PaymentMethod);
 
         return $this;
     }

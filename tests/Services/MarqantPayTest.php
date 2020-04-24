@@ -101,6 +101,49 @@ class MarqantPayTest extends MarqantPayTestCase
     }
 
     /**
+     * Test if we can remove payment method from a billable.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_removing_payment_method_from_billable(): void
+    {
+        /**
+         * @var \App\User $User
+         */
+
+        // set provider string
+        $provider = 'stripe';
+
+        // create fake customer through factory
+        $User = $this->createCustomer();
+
+        // create customer on provider side
+        $User->createCustomer($provider);
+
+        // create sample payment method
+        $PaymentMethod = $this->createPaymentMethod();
+
+        // save payment method to billable
+        $User->savePaymentMethod($PaymentMethod);
+
+        // assert that we have a payment method on the user
+        $this->assertTrue($User->hasPaymentMethod());
+
+        // remove the payment method
+        $User->removePaymentMethod($PaymentMethod);
+
+        // assert that we no longer have a payment method on the billable
+        $this->assertFalse($User->hasPaymentMethod());
+
+        // assert that there is no customer assigned to the payment method
+        $this->assertNull($PaymentMethod->object->customer);
+    }
+
+    /**
      * Test if we can charge a billable.
      *
      * @test

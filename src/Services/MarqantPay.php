@@ -44,7 +44,7 @@ class MarqantPay
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Exception
      */
-    public static function createCustomer(Model $Billable, string $provider)
+    public static function createCustomer(Model &$Billable, string $provider): Model
     {
         self::validateProvider($provider);
 
@@ -119,6 +119,7 @@ class MarqantPay
      * @param string|null $resolver
      *
      * @throws \ReflectionException
+     *
      * @throws \Exception
      */
     private static function checkImplementationOfPaymentMethod(string $type, ?string $resolver): void
@@ -138,9 +139,10 @@ class MarqantPay
      * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return mixed
+     *
      * @throws \Exception
      */
-    public static function savePaymentMethod(Model $Billable, PaymentMethodContract $PaymentMethod)
+    public static function savePaymentMethod(Model &$Billable, PaymentMethodContract $PaymentMethod)
     {
         $ProviderGateway = self::resolveProviderGateway($Billable);
 
@@ -155,6 +157,7 @@ class MarqantPay
      * @param \Illuminate\Database\Eloquent\Model $Billable
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public static function hasPaymentMethod(Model $Billable): bool
@@ -170,6 +173,7 @@ class MarqantPay
      * @param \Illuminate\Database\Eloquent\Model $Billable
      *
      * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     *
      * @throws \Exception
      */
     public static function getPaymentMethodOfBillable(Model $Billable): PaymentMethodContract
@@ -177,6 +181,24 @@ class MarqantPay
         $ProviderGateway = self::resolveProviderGateway($Billable);
 
         return $ProviderGateway->getPaymentMethodOfBillable($Billable);
+    }
+
+    /**
+     * Remove payment method from billable.
+     *
+     * @param \Illuminate\Database\Eloquent\Model                 $Billable
+     *
+     * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public static function removePaymentMethod(Model &$Billable, PaymentMethodContract $PaymentMethod): Model
+    {
+        $ProviderGateway = self::resolveProviderGateway($Billable);
+
+        return $ProviderGateway->removePaymentMethod($Billable, $PaymentMethod);
     }
 
 }
