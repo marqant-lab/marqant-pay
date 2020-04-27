@@ -219,4 +219,26 @@ class MarqantPayTest extends MarqantPayTestCase
         // check if we billed the correct user
         $this->assertNull($Payment->customer);
     }
+
+    /**
+     * Test if we can create a plan on the provider from our plan model.
+     *
+     * @test
+     *
+     * @return void
+     */
+    public function test_create_plan_from_plan_model(): void
+    {
+        $provider = 'stripe';
+
+        $Plan = $this->createPlanModel();
+
+        $Plan->createPlan($provider);
+
+        // assert that provider and plan are connected through a many to many relationship
+
+        // assert that the pivot table that holds the many to many relationship has the provider fields
+
+        // assert that the fields in the pivot table are filled with valid data
+    }
 }

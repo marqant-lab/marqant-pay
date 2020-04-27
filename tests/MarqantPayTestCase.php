@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Tests;
 
 use Tests\CreatesApplication;
+use Marqant\MarqantPay\Tests\Traits\MocksPlans;
 use Marqant\MarqantPay\Tests\Traits\MocksCustomer;
 use Marqant\MarqantPay\Tests\Traits\MocksPaymentMethods;
 use Marqant\MarqantPay\Tests\Traits\MigrateFreshSeedOnce;
@@ -15,4 +16,5 @@ abstract class MarqantPayTestCase extends BaseTestCase
     // use RefreshDatabase;
     use MigrateFreshSeedOnce;
     use MocksPaymentMethods;
+    use MocksPlans;
 }
