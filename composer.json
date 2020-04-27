@@ -1,5 +1,5 @@
 {
-    "name": "marqant/marqant-pay",
+    "name": "marqant-lab/marqant-pay",
     "description": "A flexible payment provider implementation by Marqant.",
     "type": "package",
     "license": "MIT",
