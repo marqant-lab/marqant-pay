@@ -236,9 +236,10 @@ class MarqantPayTest extends MarqantPayTestCase
         $Plan->createPlan($provider);
 
         // assert that provider and plan are connected through a many to many relationship
+        $this->assertInstanceOf(config('marqant-pay.provider_model'), $Plan->providers->first());
 
-        // assert that the pivot table that holds the many to many relationship has the provider fields
-
-        // assert that the fields in the pivot table are filled with valid data
+        // assert that the field on the plan are filled with valid data
+        $this->assertNotEmpty($Plan->stripe_id);
+        $this->assertNotEmpty($Plan->stripe_product);
     }
 }
