@@ -16,7 +16,7 @@ trait HasManyProviders
      */
     public function providers(): HasMany
     {
-        $model = config('marqant-pay.payment_model');
+        $model = config('marqant-pay.provider_model');
 
         return $this->hasMany($model);
     }

@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin \Eloquent
  */
-trait BelongsToProviders
+trait BelongsToProvider
 {
     /**
      * Establishes a belongs to many relationship with the Provider model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo;
      */
-    public function providers(): BelongsTo
+    public function provider(): BelongsTo
     {
         $model = config('marqant-pay.provider_model');
 

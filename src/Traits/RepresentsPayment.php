@@ -4,11 +4,11 @@ namespace Marqant\MarqantPay\Traits;
 
 use Rocky\Eloquent\HasDynamicRelation;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Marqant\MarqantPay\Models\Relationships\BelongsToProviders;
+use Marqant\MarqantPay\Models\Relationships\BelongsToProvider;
 
 trait RepresentsPayment
 {
-    use BelongsToProviders;
+    use BelongsToProvider;
     use HasDynamicRelation;
 
     /**
