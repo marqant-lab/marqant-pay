@@ -226,9 +226,15 @@ class MarqantPayTest extends MarqantPayTestCase
      * @test
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function test_create_plan_from_plan_model(): void
     {
+        /**
+         * @var \Marqant\MarqantPaySubscriptions\Models\Plan $Plan ;
+         */
+
         $provider = 'stripe';
 
         $Plan = $this->createPlanModel();
@@ -241,5 +247,48 @@ class MarqantPayTest extends MarqantPayTestCase
         // assert that the field on the plan are filled with valid data
         $this->assertNotEmpty($Plan->stripe_id);
         $this->assertNotEmpty($Plan->stripe_product);
+    }
+
+    /**
+     * Test if we can subscribe a billable to a plan.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_subscribe_billable_to_plan(): void
+    {
+        /**
+         * @var \Marqant\MarqantPaySubscriptions\Models\Plan $Plan
+         * @var \App\User                                    $Billable
+         */
+
+        $provider = 'stripe';
+
+        $Plan = $this->createPlanModel();
+
+        $Plan->createPlan($provider);
+
+        // assert that provider and plan are connected through a many to many relationship
+        $this->assertInstanceOf(config('marqant-pay.provider_model'), $Plan->providers->first());
+
+        // assert that the field on the plan are filled with valid data
+        $this->assertNotEmpty($Plan->stripe_id);
+        $this->assertNotEmpty($Plan->stripe_product);
+
+        // get billable
+        $Billable = $this->createBillableUser();
+
+        // subscribe billable to plan with given provider
+        $Billable->subscribe($Plan->slug);
+
+        // assert that billable is subscribed via stripe
+        ddi($Billable);
+
+        // assert that billable is subscribed in our database
+
+        // assert that all values needed are stored in the database and valid
     }
 }

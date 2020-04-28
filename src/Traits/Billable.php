@@ -101,7 +101,7 @@ trait Billable
      */
     public function subscribe(string $plan): Model
     {
-        if (method_exists(MarqantPay::class, 'subscribe')) {
+        if (MarqantPay::hasMacro('subscribe')) {
             MarqantPay::subscribe($this, $plan);
         }
 
