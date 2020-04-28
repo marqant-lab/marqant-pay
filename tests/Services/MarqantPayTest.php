@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Tests\Services;
 
 use Marqant\MarqantPay\Services\MarqantPay;
+use Stripe\Subscription as StripeSubscription;
 use Marqant\MarqantPay\Tests\MarqantPayTestCase;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
@@ -285,10 +286,18 @@ class MarqantPayTest extends MarqantPayTestCase
         $Billable->subscribe($Plan->slug);
 
         // assert that billable is subscribed via stripe
-        ddi($Billable);
+        $this->assertCount(1, StripeSubscription::all([
+            'customer' => $Billable->stripe_id,
+            'plan'     => $Plan->stripe_id,
+        ]));
 
         // assert that billable is subscribed in our database
+        $this->assertCount(1, $Billable->subscriptions);
 
         // assert that all values needed are stored in the database and valid
+        $Subscription = $Billable->subscriptions->first();
+        $this->assertNotEmpty($Subscription->stripe_id);
+        $this->assertEquals($Billable->id, $Subscription->billable_id);
+        $this->assertEquals($Plan->id, $Subscription->plan_id);
     }
 }

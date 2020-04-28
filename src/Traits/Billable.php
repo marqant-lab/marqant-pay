@@ -93,22 +93,6 @@ trait Billable
     }
 
     /**
-     * Subscribe billable model to a plan.
-     *
-     * @param string $plan
-     *
-     * @return \Illuminate\Database\Eloquent\Model|$this
-     */
-    public function subscribe(string $plan): Model
-    {
-        if (MarqantPay::hasMacro('subscribe')) {
-            MarqantPay::subscribe($this, $plan);
-        }
-
-        return $this;
-    }
-
-    /**
      * Establish a relationship to the payments model from any billable.
      */
     public function payments(): MorphMany
