@@ -9,6 +9,13 @@ use Illuminate\Support\Traits\Macroable;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
+/**
+ * Class MarqantPay
+ *
+ * @package Marqant\MarqantPay\Services
+ *
+ * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPayMixin
+ */
 class MarqantPay
 {
     /**
