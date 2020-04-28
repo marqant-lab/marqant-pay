@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Tests\Services;
 
 use Marqant\MarqantPay\Services\MarqantPay;
+use Stripe\Subscription as StripeSubscription;
 use Marqant\MarqantPay\Tests\MarqantPayTestCase;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
@@ -218,5 +219,85 @@ class MarqantPayTest extends MarqantPayTestCase
 
         // check if we billed the correct user
         $this->assertNull($Payment->customer);
+    }
+
+    /**
+     * Test if we can create a plan on the provider from our plan model.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_create_plan_from_plan_model(): void
+    {
+        /**
+         * @var \Marqant\MarqantPaySubscriptions\Models\Plan $Plan ;
+         */
+
+        $provider = 'stripe';
+
+        $Plan = $this->createPlanModel();
+
+        $Plan->createPlan($provider);
+
+        // assert that provider and plan are connected through a many to many relationship
+        $this->assertInstanceOf(config('marqant-pay.provider_model'), $Plan->providers->first());
+
+        // assert that the field on the plan are filled with valid data
+        $this->assertNotEmpty($Plan->stripe_id);
+        $this->assertNotEmpty($Plan->stripe_product);
+    }
+
+    /**
+     * Test if we can subscribe a billable to a plan.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_subscribe_billable_to_plan(): void
+    {
+        /**
+         * @var \Marqant\MarqantPaySubscriptions\Models\Plan $Plan
+         * @var \App\User                                    $Billable
+         */
+
+        $provider = 'stripe';
+
+        $Plan = $this->createPlanModel();
+
+        $Plan->createPlan($provider);
+
+        // assert that provider and plan are connected through a many to many relationship
+        $this->assertInstanceOf(config('marqant-pay.provider_model'), $Plan->providers->first());
+
+        // assert that the field on the plan are filled with valid data
+        $this->assertNotEmpty($Plan->stripe_id);
+        $this->assertNotEmpty($Plan->stripe_product);
+
+        // get billable
+        $Billable = $this->createBillableUser();
+
+        // subscribe billable to plan with given provider
+        $Billable->subscribe($Plan->slug);
+
+        // assert that billable is subscribed via stripe
+        $this->assertCount(1, StripeSubscription::all([
+            'customer' => $Billable->stripe_id,
+            'plan'     => $Plan->stripe_id,
+        ]));
+
+        // assert that billable is subscribed in our database
+        $this->assertCount(1, $Billable->subscriptions);
+
+        // assert that all values needed are stored in the database and valid
+        $Subscription = $Billable->subscriptions->first();
+        $this->assertNotEmpty($Subscription->stripe_id);
+        $this->assertEquals($Billable->id, $Subscription->billable_id);
+        $this->assertEquals($Plan->id, $Subscription->plan_id);
     }
 }

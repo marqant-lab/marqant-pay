@@ -9,7 +9,7 @@ This project aims to make it as easy as possible to implement a payment provider
 Require the package through composer.
 
 ```shell script
-compsoer require marqant/marqant-pay
+compsoer require marqant-lab/marqant-pay
 ```
 
 Create the migrations for at least one billable model.
@@ -23,10 +23,11 @@ php artisan marqant-pay:migrations "App\User"
 ## Providers
 
 For each payment provider that you want to connect to, you will first have to pull in a payment gateway through
- composer. For example here we pull in the stripe gateway.
+ composer. For example here we pull in the stripe gateway. Make sure to checkout the documentation of the provider
+ package you want to pull in.
 
 ```shell script
-composer require marqant/marqant-pay-stripe
+composer require marqant-lab/marqant-pay-stripe
 ```
 
 Then you will have to add it to the `marqant-pay.php` config file. Create it if it doesn't exist yet.
@@ -74,21 +75,13 @@ Then you can just run the migrations as usual to apply the migrations.
 php artisan migrate
 ```
 
-**Note that you might do the same for the payment gateway package that you pull in, so make sure to checkout the
+**Note that you might need to do the same for the payment gateway package that you pull in, so make sure to checkout the
  documentation of it.**
 
 ## Plans & Subscriptions
 
-If you want to charge your customers in intervals, then you need to setup a plan for that so a customer can issue a
- subscription. This package comes with a `Plan`, so you don't need to set it up yourself but you should know how they work.
-
-Plans are a representation of a plan at your chosen payment provider. The `Plan` model is our representation of this
- object in our own database.
-
-If a billable has a subscription, then this means it has a many to many relationsip with a plan, and is therefore
- subscribed to it.
- 
-Subscriptions are managed through the payment provider gateway that you pull in. 
+Check out the [marqant-lab/marqant-pay-subscriptions](https://github.com/marqant-lab/marqant-pay-subscriptions
+) package on how to pull in subscriptions functionality into your project.
 
 ## Tests
 
@@ -99,7 +92,40 @@ To run tests, you first need to set up a sqlite database that we use to get snap
 touch database/database.sqlite
 ```
 
-TODO: Finish documentation of testing.
+Next you will have to add the tests of this package to the phpunit test suite in the `phpunit.xml` file in the root
+ of your Laravel project.
+ 
+```xml
+    <testsuites>
+        ...
+        <testsuite name="MarqantPay">
+            <directory suffix="Test.php">./vendor/marqant-lab/marqant-pay/tests</directory>
+        </testsuite>
+    </testsuites>
+```
+
+Then you should be able to just run your tests with the following commands.
+
+```shell script
+phpunit
+# or
+./vendor/bin/phpunit
+```
+
+If you want to just run a specific test or a method on a test, then you can filter them out like shown below.
+
+```shell script
+phpunit --filter=<class or method>
+```
+
+If you need to perserve a snapshot of what is going on in the test database, then you can comment out the following
+ line in your `phpunit.xml` file.
+
+```xml
+        <!--<server name="DB_DATABASE" value=":memory:"/>-->
+```
+
+With this line commented out, Laravel will use the `database/database.sqlite` file to store values.
 
 ## Development
 
