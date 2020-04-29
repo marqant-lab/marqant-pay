@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @mixin \Eloquent
  */
-trait BelongsToProviders
+trait BelongsToProvider
 {
     /**
      * Establishes a belongs to many relationship with the Provider model.
