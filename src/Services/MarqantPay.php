@@ -53,7 +53,7 @@ class MarqantPay
      * @return \Illuminate\Contracts\Foundation\Application|mixed
      * @throws \Exception
      */
-    private static function resolveProviderGatewayFromString(string $provider)
+    public static function resolveProviderGatewayFromString(string $provider)
     {
         self::validateProvider($provider);
 
