@@ -9,6 +9,13 @@ use Illuminate\Support\Traits\Macroable;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
+/**
+ * Class MarqantPay
+ *
+ * @package Marqant\MarqantPay\Services
+ *
+ * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPayMixin
+ */
 class MarqantPay
 {
     /**
@@ -35,6 +42,19 @@ class MarqantPay
             $provider = $PaymentMethod->provider;
         }
 
+        return self::resolveProviderGatewayFromString($provider);
+    }
+
+    /**
+     * Resolve the provider by a given string.
+     *
+     * @param string $provider
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|mixed
+     * @throws \Exception
+     */
+    private static function resolveProviderGatewayFromString(string $provider)
+    {
         self::validateProvider($provider);
 
         $gateway = config("marqant-pay.gateways.{$provider}", null);
@@ -214,9 +234,30 @@ class MarqantPay
         return $ProviderGateway->removePaymentMethod($Billable, $PaymentMethod);
     }
 
-    public static function getCurrency()
+    /**
+     * Get the current currency.
+     *
+     * @return string
+     */
+    public static function getCurrency(): string
     {
         return config('marqant-pay.default_currency');
+    }
+
+    /**
+     * Create the plan on the provider end.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Plan
+     * @param string                              $provider
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     * @throws \Exception
+     */
+    public static function createPlan(Model $Plan, string $provider): Model
+    {
+        $ProviderGateway = self::resolveProviderGatewayFromString($provider);
+
+        return $ProviderGateway->createPlan($Plan);
     }
 
 }
