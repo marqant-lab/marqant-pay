@@ -52,4 +52,36 @@ trait MocksCustomer
 
         return $Billable;
     }
+
+    /**
+     * Create a billable user with a payment method that requires additional actions to perform charges.
+     *
+     * @param array $options
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    protected function createBillableUserWithAdditionalActionRequired(array $options = []): Model
+    {
+        /**
+         * @var \Marqant\MarqantPay\Tests\Services\MarqantPayTest $this
+         * @var \App\User                                         $Billable
+         */
+
+        $provider = 'stripe';
+
+        // create empty customer
+        $Billable = $this->createUser();
+
+        // create customer on provider side
+        $Billable->createCustomer($provider);
+
+        // create sample payment method
+        $PaymentMethod = $this->createPaymentMethodWithAddtionalActionRequired();
+
+        $Billable->savePaymentMethod($PaymentMethod);
+
+        return $Billable;
+    }
 }
