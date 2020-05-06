@@ -29,4 +29,24 @@ trait MocksPaymentMethods
 
         return MarqantPay::resolvePaymentMethod($type, $details);
     }
+
+    /**
+     * Creates a payment method that requires additional next action to perform charges.
+     *
+     * @param array $options
+     *
+     * @return \Marqant\MarqantPay\Contracts\PaymentMethodContract
+     *
+     * @throws \Exception
+     */
+    protected function createPaymentMethodWithAddtionalActionRequired(array $options = []): PaymentMethodContract
+    {
+        $type = 'card';
+
+        $details = [
+            'token' => 'pm_card_authenticationRequired',
+        ];
+
+        return MarqantPay::resolvePaymentMethod($type, $details);
+    }
 }

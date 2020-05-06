@@ -2,9 +2,11 @@
 
 namespace Marqant\MarqantPay\Tests\Services;
 
+use Stripe\SetupIntent as StripeSetupIntent;
 use Marqant\MarqantPay\Services\MarqantPay;
 use Stripe\Subscription as StripeSubscription;
 use Marqant\MarqantPay\Tests\MarqantPayTestCase;
+use Marqant\MarqantPayStripe\StripePaymentGateway;
 use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
 
 /**
@@ -300,4 +302,75 @@ class MarqantPayTest extends MarqantPayTestCase
         $this->assertEquals($Billable->id, $Subscription->billable_id);
         $this->assertEquals($Plan->id, $Subscription->plan_id);
     }
+
+    /**
+     * Test if we can create a setup intent for a customer.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function test_create_setup_intend_for_customer(): void
+    {
+        /**
+         * @var \App\User $User
+         */
+
+        // set provider string
+        $provider = 'stripe';
+
+        // create fake customer through factory
+        $User = $this->createUser();
+
+        // create customer on provider side
+        $User->createCustomer($provider);
+
+        // create a setup intent to receive a client secret
+        // note: this is stripe specific (as far as I can tell), so we need to proceed
+        //       with the stripe payment gateway
+        $StripeSetupIntent = StripePaymentGateway::createSetupIntent($User);
+
+        // assert that this is an instance of a stripe setup intent
+        $this->assertInstanceOf(StripeSetupIntent::class, $StripeSetupIntent);
+
+        // assert that we have a client secret
+        $this->assertNotEmpty($StripeSetupIntent->client_secret);
+    }
+
+    /**
+     * Test if we can charge a user that requires a next action to perform.
+     *
+     * Note: we only test this process untill the point, where we get a next action back.
+     *
+     * @test
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    // public function test_charge_user_with_additional_next_action(): void
+    // {
+    //     /**
+    //      * @var \App\User $User
+    //      */
+    //
+    //     $amount = 999; // 9,99 ($|€|...)
+    //
+    //     // create fake customer through factory
+    //     $User = $this->createBillableUserWithAdditionalActionRequired();
+    //
+    //     // charge the user
+    //     $Payment = $User->charge($amount);
+    //
+    //     // check that we got back an instance of Payment
+    //     $this->assertInstanceOf(config('marqant-pay.payment_model'), $Payment);
+    //
+    //     // check the amount
+    //     $this->assertEquals($amount, $Payment->amount);
+    //
+    //     // check if we billed the correct user
+    //     $this->assertEquals($User->provider_id, $Payment->customer);
+    // }
 }
