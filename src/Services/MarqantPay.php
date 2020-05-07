@@ -101,6 +101,22 @@ class MarqantPay
     }
 
     /**
+     * Update Payment status through received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model  $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws Exception
+     */
+    public static function updatePaymentStatus(Model $Payment): Model
+    {
+        $ProviderGateway = self::resolveProviderGatewayFromString($Payment->provider);
+
+        return $ProviderGateway->updatePaymentStatus($Payment);
+    }
+
+    /**
      * Validate a provider string against the configuration.
      *
      * @param null|string $provider

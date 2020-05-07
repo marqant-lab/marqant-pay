@@ -28,6 +28,15 @@ abstract class PaymentGatewayContract
     public abstract function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model;
 
     /**
+     * Update Payment status through received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public abstract function updatePaymentStatus(Model $Payment): Model;
+
+    /**
      * Subscribe a given Billable to a plan on the payment provider side.
      *
      * @param \Illuminate\Database\Eloquent\Model $Billable
