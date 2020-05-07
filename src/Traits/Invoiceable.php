@@ -17,10 +17,8 @@ trait Invoiceable
     /**
      * Create a PDF invoice from the given payment.
      */
-    public function createPdfPaymentInvoice(): Model
+    public function createInvoice(): Model
     {
-        $Billable = $this->billable();
-
-        return MarqantPay::createPdfPaymentInvoice($Billable, $this);
+        return MarqantPay::createInvoice($this);
     }
 }

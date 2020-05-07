@@ -7,7 +7,7 @@ use Marqant\MarqantPay\Contracts\ProviderInvoiceServiceContract;
 
 abstract class BaseInvoiceService extends ProviderInvoiceServiceContract
 {
-    protected function sendInvoice(Model $Payment): bool
+    public function sendInvoice(Model $Payment): bool
     {
         // TODO: Implement sendInvoice() method.
     }

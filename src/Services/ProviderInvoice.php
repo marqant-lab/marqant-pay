@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProviderInvoice extends BaseInvoiceService
 {
 
-    protected function createInvoice(Model $Payment): Model
+    public function createInvoice(Model $Payment): Model
     {
         // TODO: Implement createInvoice() method.
     }

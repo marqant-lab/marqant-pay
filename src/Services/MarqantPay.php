@@ -269,6 +269,9 @@ class MarqantPay
      */
     public static function createInvoice(Model $Payment): Model
     {
+        /**
+         * @var \Marqant\MarqantPay\Services\ProviderInvoice $InvoiceService
+         */
         $InvoiceService = app(config('marqant-pay.invoice_service'));
 
         return $InvoiceService->createInvoice($Payment);

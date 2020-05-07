@@ -13,7 +13,7 @@ abstract class ProviderInvoiceServiceContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    abstract protected function createInvoice(Model $Payment): Model;
+    abstract public function createInvoice(Model $Payment): Model;
 
     /**
      * Send invoice to billable email.
@@ -22,5 +22,5 @@ abstract class ProviderInvoiceServiceContract
      *
      * @return bool
      */
-    abstract protected function sendInvoice(Model $Payment): bool;
+    abstract public function sendInvoice(Model $Payment): bool;
 }
