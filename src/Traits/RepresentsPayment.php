@@ -8,6 +8,7 @@ use Marqant\MarqantPay\Models\Relationships\BelongsToManyBillables;
 
 trait RepresentsPayment
 {
+    use Invoiceable;
     use BelongsToProvider;
     use HasDynamicRelation;
     use BelongsToManyBillables;

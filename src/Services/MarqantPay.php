@@ -14,7 +14,7 @@ use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
  *
  * @package Marqant\MarqantPay\Services
  *
- * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPayMixin
+ * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPaySubscriptionsMixin
  */
 class MarqantPay
 {
@@ -258,6 +258,20 @@ class MarqantPay
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
         return $ProviderGateway->createPlan($Plan);
+    }
+
+    /**
+     * Create invoices for a given payment.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function createInvoice(Model $Payment): Model
+    {
+        $InvoiceService = app(config('marqant-pay.invoice_service'));
+
+        return $InvoiceService->createInvoice($Payment);
     }
 
 }

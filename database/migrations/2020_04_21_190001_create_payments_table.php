@@ -21,6 +21,10 @@ class CreatePaymentsTable extends Migration
             $table->string('currency');
             $table->string('status');
 
+            // pdf download (url from provider or custom pdf)
+            $table->string('download')
+                ->nullable();
+
             // setup polymorphic relationship
             $table->bigInteger('billable_id');
             $table->string('billable_type');
