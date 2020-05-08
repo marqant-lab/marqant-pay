@@ -87,17 +87,19 @@ class MarqantPay
      *
      * @param \Illuminate\Database\Eloquent\Model                      $Billable
      * @param int                                                      $amount
+     * @param string                                                   $description
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    public static function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
+    public static function charge(Model $Billable, int $amount, string $description,
+                                  ?PaymentMethodContract $PaymentMethod = null): Model
     {
         $ProviderGateway = self::resolveProviderGateway($Billable, $PaymentMethod);
 
-        return $ProviderGateway->charge($Billable, $amount, $PaymentMethod);
+        return $ProviderGateway->charge($Billable, $amount, $description, $PaymentMethod);
     }
 
     /**

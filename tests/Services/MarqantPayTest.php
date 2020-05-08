@@ -172,11 +172,13 @@ class MarqantPayTest extends MarqantPayTestCase
 
         $amount = 999; // 9,99 ($|€|...)
 
+        $description = 'test charge';
+
         // create fake customer through factory
         $User = $this->createBillableUser();
 
         // charge the user
-        $Payment = $User->charge($amount);
+        $Payment = $User->charge($amount, $description);
 
         // check that we got back an instance of Payment
         $this->assertInstanceOf(config('marqant-pay.payment_model'), $Payment);
@@ -186,6 +188,9 @@ class MarqantPayTest extends MarqantPayTestCase
 
         // check if we billed the correct user
         $this->assertEquals($User->provider_id, $Payment->customer);
+
+        // check that there is the right description
+        $this->assertEquals($description, $Payment->description);
     }
 
     /**
@@ -211,7 +216,7 @@ class MarqantPayTest extends MarqantPayTestCase
         $PaymentMethod = $this->createPaymentMethod();
 
         // charge the user
-        $Payment = $User->charge($amount, $PaymentMethod);
+        $Payment = $User->charge($amount, 'test charge with specific pm', $PaymentMethod);
 
         // check that we got back an instance of Payment
         $this->assertInstanceOf(config('marqant-pay.payment_model'), $Payment);
@@ -350,6 +355,7 @@ class MarqantPayTest extends MarqantPayTestCase
      *
      * @throws \Exception
      */
+    // TODO: handle additional next actions
     // public function test_charge_user_with_additional_next_action(): void
     // {
     //     /**
