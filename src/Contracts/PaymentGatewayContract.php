@@ -37,6 +37,24 @@ abstract class PaymentGatewayContract
     public abstract function updatePaymentStatus(Model $Payment): Model;
 
     /**
+     * Get or create (if not exists) Payment using provider data
+     *
+     * @param array $invoice_data
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public abstract function getPaymentByInvoice(array $invoice_data): Model;
+
+    /**
+     * Create Payment using provider data
+     *
+     * @param string $paymentID
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public abstract function createPaymentByProviderPaymentID(string $paymentID): Model;
+
+    /**
      * Subscribe a given Billable to a plan on the payment provider side.
      *
      * @param \Illuminate\Database\Eloquent\Model $Billable

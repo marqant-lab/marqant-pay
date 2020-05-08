@@ -117,6 +117,38 @@ class MarqantPay
     }
 
     /**
+     * Create Payment using provider data
+     *
+     * @param string $provider
+     * @param string $paymentID
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public static function createPaymentByProviderPaymentID(string $provider, string $paymentID): Model{
+        $ProviderGateway = self::resolveProviderGatewayFromString($provider);
+
+        return $ProviderGateway->createPaymentByProviderPaymentID($paymentID);
+    }
+
+    /**
+     * Get or create (if not exists) Payment using provider data
+     *
+     * @param string $provider
+     * @param array  $invoice_data
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public static function getPaymentByInvoice(string $provider, array $invoice_data): Model{
+        $ProviderGateway = self::resolveProviderGatewayFromString($provider);
+
+        return $ProviderGateway->getPaymentByInvoice($invoice_data);
+    }
+
+    /**
      * Validate a provider string against the configuration.
      *
      * @param null|string $provider
