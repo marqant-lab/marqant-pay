@@ -29,7 +29,7 @@ class CreatePaymentsTable extends Migration
             $table->string('status');
 
             // pdf download (url from provider or custom pdf)
-            $table->string('invoice')
+            $table->string('download')
                 ->nullable();
 
             // setup polymorphic relationship to billable model
