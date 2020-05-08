@@ -18,7 +18,7 @@ trait RepresentsPayment
     protected static function booted()
     {
         // add invoice_nr to payment on save
-        static::saving(function (Model $Payment) {
+        static::creating(function (Model $Payment) {
             /**
              * @var \Marqant\MarqantPay\Models\Payment $Payment
              */
