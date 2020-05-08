@@ -2,8 +2,10 @@
 
 namespace Marqant\MarqantPay;
 
+use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Support\ServiceProvider;
 use Marqant\MarqantPay\Commands\MigrationsForBillable;
+use Marqant\MarqantPay\Models\Observers\PaymentObserver;
 
 class MarqantPayServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,8 @@ class MarqantPayServiceProvider extends ServiceProvider
         $this->setupMigrations();
 
         $this->setupCommands();
+
+        $this->setupObservers();
     }
 
     /**
@@ -72,5 +76,15 @@ class MarqantPayServiceProvider extends ServiceProvider
      */
     private function setupFacades()
     {
+    }
+
+    /**
+     * Setup observers for models in boot method.
+     *
+     * @return void
+     */
+    private function setupObservers()
+    {
+        Payment::observe(PaymentObserver::class);
     }
 }
