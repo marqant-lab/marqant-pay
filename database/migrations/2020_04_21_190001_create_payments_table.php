@@ -19,6 +19,10 @@ class CreatePaymentsTable extends Migration
             // description to be used on invoices
             $table->string('description');
 
+            // unique invoice nr of the payment
+            $table->string('invoice_nr')
+                ->unique();
+
             $table->string('provider');
             $table->integer('amount');
             $table->string('currency');
