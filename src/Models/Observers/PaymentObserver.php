@@ -46,7 +46,7 @@ class PaymentObserver
                 ->addYear()
                 ->firstOfYear();
 
-            $nr = 1 + $PaymentModel::where('created_at', '=>', $start)
+            $nr = 1 + $PaymentModel::where('created_at', '>=', $start)
                     ->where('created_at', '<', $end)
                     ->count();
         }
