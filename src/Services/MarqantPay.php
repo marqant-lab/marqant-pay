@@ -105,7 +105,7 @@ class MarqantPay
     /**
      * Update Payment status through received payment provider
      *
-     * @param \Illuminate\Database\Eloquent\Model  $Payment
+     * @param \Illuminate\Database\Eloquent\Model $Payment
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
@@ -128,7 +128,8 @@ class MarqantPay
      *
      * @throws \Exception
      */
-    public static function createPaymentByProviderPaymentID(string $provider, string $payment_id): Model{
+    public static function createPaymentByProviderPaymentID(string $provider, string $payment_id): Model
+    {
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
         return $ProviderGateway->createPaymentByProviderPaymentID($payment_id);
@@ -144,7 +145,8 @@ class MarqantPay
      *
      * @throws \Exception
      */
-    public static function getPaymentByInvoice(string $provider, array $invoice_data): Model{
+    public static function getPaymentByInvoice(string $provider, array $invoice_data): Model
+    {
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
         return $ProviderGateway->getPaymentByInvoice($invoice_data);
@@ -245,6 +247,10 @@ class MarqantPay
      */
     public static function hasPaymentMethod(Model $Billable): bool
     {
+        if (!$Billable->provider) {
+            return false;
+        }
+
         $ProviderGateway = self::resolveProviderGateway($Billable);
 
         return $ProviderGateway->hasPaymentMethod($Billable);
