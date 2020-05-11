@@ -83,6 +83,15 @@ php artisan migrate
 Check out the [marqant-lab/marqant-pay-subscriptions](https://github.com/marqant-lab/marqant-pay-subscriptions
 ) package on how to pull in subscriptions functionality into your project.
 
+## Invoices
+
+Per default Marqant Pay uses the invoices from the payment providers available in your project, but you can also
+ implement your own service. Note, that there is already a setup for standard PDF invoices available at [marqant-lab
+ /marqant-pay-invoices](https://github.com/marqant-lab/marqant-pay-invoices).
+ 
+To exchange the service being used, you have to update the `marqant-pay.invoice_service` configuration value in the
+ `marqant-pay` configuration.
+
 ## Tests
 
 To run tests, you first need to set up a sqlite database that we use to get snapshots of the database state. Run the

@@ -16,12 +16,23 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            // description to be used on invoices
+            $table->string('description');
+
+            // unique invoice nr of the payment
+            $table->string('invoice_nr')
+                ->unique();
+
             $table->string('provider');
             $table->integer('amount');
             $table->string('currency');
             $table->string('status');
 
-            // setup polymorphic relationship
+            // pdf download (url from provider or custom pdf)
+            $table->string('invoice')
+                ->nullable();
+
+            // setup polymorphic relationship to billable model
             $table->bigInteger('billable_id');
             $table->string('billable_type');
 

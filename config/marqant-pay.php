@@ -87,4 +87,20 @@ return [
 
     'default_currency' => env('MARQANT_PAY_CURRENCY', 'eur'),
 
+    /*
+     |--------------------------------------------------------------------------
+     | Invoice Service
+     |--------------------------------------------------------------------------
+     |
+     | Per default marqant-pay uses the invoices provided by the payment
+     | provider if available. If you want to change this behaviour, you can
+     | change the class provided in this configuration option.
+     |
+     | Note: If you want to make use of custom PDF invoices, check out the
+     |       marqant-lab/marqant-pay-invoices package.
+     |
+     */
+
+    'invoice_service' => \Marqant\MarqantPay\Services\ProviderInvoice::class,
+
 ];

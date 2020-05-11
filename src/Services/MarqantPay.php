@@ -14,7 +14,7 @@ use Marqant\MarqantPay\Contracts\PaymentGatewayContract;
  *
  * @package Marqant\MarqantPay\Services
  *
- * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPayMixin
+ * @mixin \Marqant\MarqantPaySubscriptions\Mixins\MarqantPaySubscriptionsMixin
  */
 class MarqantPay
 {
@@ -87,17 +87,19 @@ class MarqantPay
      *
      * @param \Illuminate\Database\Eloquent\Model                      $Billable
      * @param int                                                      $amount
+     * @param string                                                   $description
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    public static function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
+    public static function charge(Model $Billable, int $amount, string $description,
+                                  ?PaymentMethodContract $PaymentMethod = null): Model
     {
         $ProviderGateway = self::resolveProviderGateway($Billable, $PaymentMethod);
 
-        return $ProviderGateway->charge($Billable, $amount, $PaymentMethod);
+        return $ProviderGateway->charge($Billable, $amount, $description, $PaymentMethod);
     }
 
     /**
@@ -306,6 +308,23 @@ class MarqantPay
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
         return $ProviderGateway->createPlan($Plan);
+    }
+
+    /**
+     * Create invoices for a given payment.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function createInvoice(Model $Payment): Model
+    {
+        /**
+         * @var \Marqant\MarqantPay\Services\ProviderInvoice $InvoiceService
+         */
+        $InvoiceService = app(config('marqant-pay.invoice_service'));
+
+        return $InvoiceService->createInvoice($Payment);
     }
 
 }

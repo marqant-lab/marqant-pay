@@ -13,6 +13,7 @@ abstract class MarqantPayTestCase extends BaseTestCase
 {
     use CreatesApplication;
     use MocksCustomer;
+
     // use RefreshDatabase;
     use MigrateFreshSeedOnce;
     use MocksPaymentMethods;
