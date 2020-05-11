@@ -120,16 +120,16 @@ class MarqantPay
      * Create Payment using provider data
      *
      * @param string $provider
-     * @param string $paymentID
+     * @param string $payment_id
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    public static function createPaymentByProviderPaymentID(string $provider, string $paymentID): Model{
+    public static function createPaymentByProviderPaymentID(string $provider, string $payment_id): Model{
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
-        return $ProviderGateway->createPaymentByProviderPaymentID($paymentID);
+        return $ProviderGateway->createPaymentByProviderPaymentID($payment_id);
     }
 
     /**

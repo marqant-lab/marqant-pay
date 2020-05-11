@@ -48,11 +48,11 @@ abstract class PaymentGatewayContract
     /**
      * Create Payment using provider data
      *
-     * @param string $paymentID
+     * @param string $payment_id
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function createPaymentByProviderPaymentID(string $paymentID): Model;
+    public abstract function createPaymentByProviderPaymentID(string $payment_id): Model;
 
     /**
      * Subscribe a given Billable to a plan on the payment provider side.
