@@ -247,7 +247,7 @@ class MarqantPay
      */
     public static function hasPaymentMethod(Model $Billable): bool
     {
-        if (!$Billable->provider) {
+        if (!$Billable->marqant_pay_provider) {
             return false;
         }
 
