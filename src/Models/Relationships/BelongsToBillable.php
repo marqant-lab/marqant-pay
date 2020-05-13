@@ -4,7 +4,7 @@ namespace Marqant\MarqantPay\Models\Relationships;
 
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-trait BelongsToManyBillables
+trait BelongsToBillable
 {
     /**
      * Establish relationship to any billables.

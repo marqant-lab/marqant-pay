@@ -4,6 +4,7 @@ namespace Marqant\MarqantPay\Services;
 
 use Exception;
 use ReflectionClass;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Traits\Macroable;
 use Marqant\MarqantPay\Contracts\PaymentMethodContract;
@@ -315,6 +316,21 @@ class MarqantPay
         $InvoiceService = app(config('marqant-pay.invoice_service'));
 
         return $InvoiceService->createInvoice($Payment);
+    }
+
+    /**
+     * Get model instances from config.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getBillables(): Collection
+    {
+        // get billable classes
+        // - get array from config
+        // - map through the array/collection and get instances of the models
+        return collect(config('marqant-pay.billables'))->map(function ($billable) {
+            return app($billable);
+        });
     }
 
 }

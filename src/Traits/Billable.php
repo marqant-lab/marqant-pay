@@ -2,6 +2,7 @@
 
 namespace Marqant\MarqantPay\Traits;
 
+use Rocky\Eloquent\HasDynamicRelation;
 use Illuminate\Database\Eloquent\Model;
 use Marqant\MarqantPay\Services\MarqantPay;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,6 +10,8 @@ use Marqant\MarqantPay\Contracts\PaymentMethodContract;
 
 trait Billable
 {
+    use HasDynamicRelation;
+
     /**
      * Create a customer on the provider end.
      *
