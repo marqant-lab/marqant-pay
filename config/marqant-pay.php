@@ -103,4 +103,15 @@ return [
 
     'invoice_service' => \Marqant\MarqantPay\Services\ProviderInvoice::class,
 
+    /*
+     |--------------------------------------------------------------------------
+     | Tax
+     |--------------------------------------------------------------------------
+     |
+     | In this section you can setup the taxes that you want to use.
+     |
+     */
+
+    'tax' => env('MARQANT_PAY_TAX', 0.2),
+
 ];

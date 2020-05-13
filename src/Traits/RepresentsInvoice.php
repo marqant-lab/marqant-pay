@@ -2,6 +2,7 @@
 
 namespace Marqant\MarqantPay\Traits;
 
+use Marqant\MarqantPay\Traits\Attributes\AmountAttribute;
 use Marqant\MarqantPay\Traits\Attributes\InvoiceAttribute;
 
 /**
@@ -11,5 +12,8 @@ use Marqant\MarqantPay\Traits\Attributes\InvoiceAttribute;
  */
 trait RepresentsInvoice
 {
+
+    use AmountAttribute;
     use InvoiceAttribute;
+
 }
