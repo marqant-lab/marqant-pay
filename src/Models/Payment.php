@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Marqant\MarqantPay\Traits\RepresentsInvoice;
 use Marqant\MarqantPay\Traits\RepresentsPayment;
 
 /**
@@ -13,6 +14,7 @@ use Marqant\MarqantPay\Traits\RepresentsPayment;
 class Payment extends Model
 {
     use RepresentsPayment;
+    use RepresentsInvoice;
 
     /**
      * The attributes that aren't mass assignable.
