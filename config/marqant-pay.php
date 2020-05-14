@@ -114,4 +114,16 @@ return [
 
     'tax' => env('MARQANT_PAY_TAX', 0.2),
 
+    /*
+     |--------------------------------------------------------------------------
+     | Email Templates
+     |--------------------------------------------------------------------------
+     |
+     | Marqant Pay fires events that trigger the notification of users through
+     | emails. In this section you can define the email templates to be used.
+     |
+     */
+
+    'invoice_email_view' => 'marqant-pay::email.invoice',
+
 ];

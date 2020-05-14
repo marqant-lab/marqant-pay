@@ -32,6 +32,10 @@ class CreatePaymentsTable extends Migration
             $table->string('invoice')
                 ->nullable();
 
+            // boolean to check if the user was already informed
+            $table->boolean('invoice_sent')
+                ->default(false);
+
             // setup polymorphic relationship to billable model
             $table->bigInteger('billable_id');
             $table->string('billable_type');

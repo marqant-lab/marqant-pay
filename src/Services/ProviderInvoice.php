@@ -10,5 +10,7 @@ class ProviderInvoice extends BaseInvoiceService
     public function createInvoice(Model $Payment): Model
     {
         // TODO: Implement createInvoice() method.
+
+        return $Payment;
     }
 }

@@ -12,8 +12,6 @@ use Marqant\MarqantPay\Traits\Attributes\InvoiceAttribute;
  */
 trait RepresentsInvoice
 {
-
     use AmountAttribute;
     use InvoiceAttribute;
-
 }

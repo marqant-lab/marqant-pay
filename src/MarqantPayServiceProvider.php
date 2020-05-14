@@ -6,9 +6,11 @@ use Marqant\MarqantPay\Models\Payment;
 use Illuminate\Support\ServiceProvider;
 use Marqant\MarqantPay\Commands\MigrationsForBillable;
 use Marqant\MarqantPay\Models\Observers\PaymentObserver;
+use Marqant\MarqantPay\Providers\MarqantPayEventsServiceProvider;
 
 class MarqantPayServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application services.
      *
@@ -19,6 +21,8 @@ class MarqantPayServiceProvider extends ServiceProvider
         $this->setupConfig();
 
         $this->setupFacades();
+
+        $this->sertupServiceProviders();
     }
 
     /**
@@ -33,6 +37,8 @@ class MarqantPayServiceProvider extends ServiceProvider
         $this->setupCommands();
 
         $this->setupObservers();
+
+        $this->setupResources();
     }
 
     /**
@@ -86,5 +92,20 @@ class MarqantPayServiceProvider extends ServiceProvider
     private function setupObservers()
     {
         Payment::observe(PaymentObserver::class);
+    }
+
+    private function sertupServiceProviders()
+    {
+        $this->app->register(MarqantPayEventsServiceProvider::class);
+    }
+
+    /**
+     * Setup resources in boot method.
+     *
+     * @return void
+     */
+    private function setupResources()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'marqant-pay');
     }
 }
