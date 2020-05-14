@@ -20,13 +20,13 @@ abstract class PaymentGatewayContract
      * Charge a given billable for a given amount.
      *
      * @param \Illuminate\Database\Eloquent\Model                      $Billable
-     * @param int                                                      $amount
+     * @param float                                                    $amount
      * @param string                                                   $description
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function charge(Model $Billable, int $amount, string $description,
+    public abstract function charge(Model $Billable, float $amount, string $description,
                                     ?PaymentMethodContract $PaymentMethod = null): Model;
 
     /**

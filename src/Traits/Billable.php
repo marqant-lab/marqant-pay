@@ -30,7 +30,7 @@ trait Billable
     /**
      * Charge the Billable for a given amount.
      *
-     * @param int                                                      $amount
+     * @param float                                                    $amount
      * @param string                                                   $description
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
@@ -38,7 +38,7 @@ trait Billable
      *
      * @throws \Exception
      */
-    public function charge(int $amount, string $description, ?PaymentMethodContract $PaymentMethod = null): Model
+    public function charge(float $amount, string $description, ?PaymentMethodContract $PaymentMethod = null): Model
     {
         return MarqantPay::charge($this, $amount, $description, $PaymentMethod);
     }
