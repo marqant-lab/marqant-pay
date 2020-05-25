@@ -14,7 +14,7 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Billable class
+     | Billable classes
      |--------------------------------------------------------------------------
      |
      | In this section you can define all billable classes for your project.

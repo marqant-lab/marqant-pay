@@ -12,12 +12,30 @@ Require the package through composer.
 compsoer require marqant-lab/marqant-pay
 ```
 
-Create the migrations for at least one billable model.
+Add project billable models to 'marqant-pay.billables' config  
+example:
+```php
+
+    /*
+     |--------------------------------------------------------------------------
+     | Billable classes
+     |--------------------------------------------------------------------------
+     |
+     | In this section you can define all billable classes for your project.
+     |
+     */
+
+    'billables' => [
+        'user' => \App\User::class,
+        'company' => \App\Models\Company::class,
+    ],
+
+```
+
+Create the migrations for at least one billable model.  
 
 ```shell script
-php artisan marqant-pay:migrations App\\User
-# or
-php artisan marqant-pay:migrations "App\User"
+php artisan marqant-pay:migrations
 ```
 
 ## Providers
@@ -59,14 +77,10 @@ A billable in the context of this package is every model that is prepared to be 
 
 The setup consists of the database table columns needed to store provider related data and the usage of the `Billable
 ` trait on the billable model.
-
-To create the needed migrations run the following command but replace the `User` model if you want another model to
- be used as customer, eg. a `Company` model.
+To create the needed migrations run the following command but first add project billable models to 'marqant-pay.billables' config if you don't did it yet.  
 
 ```shell script
-php artisan marqant-pay:migrations App\\User
-# or
-php artisan marqant-pay:migrations "App\User"
+php artisan marqant-pay:migrations
 ```
 
 Then you can just run the migrations as usual to apply the migrations.

@@ -15,15 +15,14 @@ class MigrationsForBillable extends Command
      *
      * @var string
      */
-    protected $signature = 'marqant-pay:migrations
-                                {billable : The billable model to create the migrations for.}';
+    protected $signature = 'marqant-pay:migrations';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create migrations for a given billable model.';
+    protected $description = 'Create migrations for billable model(s) from marqant-pay.billables config.';
 
     /**
      * Create a new command instance.
@@ -42,23 +41,40 @@ class MigrationsForBillable extends Command
      */
     public function handle()
     {
-        $Billable = $this->getBillableModel();
+        // get all billable models from config
+        $billables = collect(config('marqant-pay.billables'));
 
-        $this->makeMigrationForBillable($Billable);
+        $billables->each(function ($model_name) {
+            $this->line("create migration for '$model_name' model");
+
+            $Billable = $this->getBillableModel($model_name);
+            if (is_null($Billable)) {
+                return;
+            }
+
+            $this->makeMigrationForBillable($Billable);
+
+            $this->line("completed processing '$model_name' model");
+        });
 
         $this->info('Done! 👍');
     }
 
     /**
-     * Get billable argument from input and resolve it to a model with the Billable trait attached.
+     * Resolve model name to a model with the Billable trait attached.
      *
-     * @return Model
+     * @param string $model_name
+     *
+     * @return Model|null
      */
-    private function getBillableModel()
+    private function getBillableModel(string $model_name)
     {
-        $Billable = app($this->argument('billable'));
+        $Billable = app($model_name);
 
-        $this->checkIfModelIsBillable($Billable);
+        $can_continue = $this->checkIfModelIsBillable($Billable);
+        if ($can_continue === false) {
+            return null;
+        }
 
         return $Billable;
     }
@@ -68,15 +84,20 @@ class MigrationsForBillable extends Command
      * If it doesn't, print out an error message and exit the command.
      *
      * @param \Illuminate\Database\Eloquent\Model $Billable
+     *
+     * @return bool
      */
-    private function checkIfModelIsBillable(Model $Billable): void
+    private function checkIfModelIsBillable(Model $Billable): bool
     {
         $traits = class_uses($Billable);
 
         if (!collect($traits)->contains(Billable::class)) {
-            $this->error('The given model is not a Billable.');
-            exit(1);
+            $this->alert('The given model '. get_class($Billable) . ' is not a Billable.');
+
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -106,6 +127,14 @@ class MigrationsForBillable extends Command
      */
     private function makeMigration(string $table)
     {
+        $path = database_path('migrations');
+
+        // no need to create migration if it is already exists
+        $can_continue = $this->preventDuplicates($path, $table);
+        if ($can_continue === false) {
+            return;
+        }
+
         $stub_path = $this->getStubPath();
 
         $stub = $this->getStub($stub_path);
@@ -185,7 +214,10 @@ class MigrationsForBillable extends Command
 
         $path = database_path('migrations');
 
-        $this->preventDuplicates($path, $table);
+        $can_continue = $this->preventDuplicates($path, $table);
+        if ($can_continue === false) {
+            return;
+        }
 
         File::put($path . '/' . $file_name, $stub);
     }
@@ -211,11 +243,15 @@ class MigrationsForBillable extends Command
     }
 
     /**
+     * Check if migration already exists
+     *
      * @param string $path
      *
      * @param string $table
+     *
+     * @return bool - true if can continue, false if find migration
      */
-    private function preventDuplicates(string $path, string $table)
+    private function preventDuplicates(string $path, string $table): bool
     {
         $file = "add_marqant_pay_fields_to_{$table}_table.php";
 
@@ -228,8 +264,11 @@ class MigrationsForBillable extends Command
             });
 
         if ($files->contains($file)) {
-            $this->error("Migration for marqant pay fields on {$table} already exists.");
-            exit(1);
+            $this->alert("Migration for marqant pay fields on '{$table}' already exists.");
+
+            return false;
         }
+
+        return true;
     }
 }
