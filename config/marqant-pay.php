@@ -126,4 +126,38 @@ return [
 
     'invoice_email_view' => 'marqant-pay::email.invoice',
 
+    'payment_failed_email_view' => 'marqant-pay::email.payment_failed',
+
+    'payment_failed_support_email_view' => 'marqant-pay::email.payment_failed_support',
+
+    /*
+     |--------------------------------------------------------------------------
+     | Support Emails
+     |--------------------------------------------------------------------------
+     |
+     | Marqant Pay send technical emails.
+     | It is your project support emails
+     | For example: webhook 'payment_intent.payment_failed' event.
+     | In this section you can define the email addresses to be used.
+     |
+     */
+
+    'support_emails' => [],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Payment URL(s)
+     |--------------------------------------------------------------------------
+     |
+     | Some technical urls(s) used for emails etc.
+     |
+     */
+
+    'payment_urls' => [
+        // base url to the site with customers accounts
+        'base_url' => '',
+        // url to update customer payment method
+        'payment_sub_url' => '',
+    ]
+
 ];
