@@ -33,10 +33,29 @@ abstract class PaymentGatewayContract
      * Update Payment status through received payment provider
      *
      * @param \Illuminate\Database\Eloquent\Model $Payment
+     * @param string|null $status
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function updatePaymentStatus(Model $Payment): Model;
+    public abstract function updatePaymentStatus(Model $Payment, $status = null): Model;
+
+    /**
+     * Send email if Payment failed for received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public abstract function sendEmailFailedPayment(Model $Payment): Model;
+
+    /**
+     * Send email if Payment failed for received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public abstract function sendSupportEmailFailedPayment(Model $Payment): Model;
 
     /**
      * Get or create (if not exists) Payment using provider data
