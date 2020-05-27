@@ -14,6 +14,8 @@ use Marqant\MarqantPay\Traits\RepresentsPayment;
  */
 class Payment extends Model
 {
+    const STATUS_FAILED = 'failed';
+
     use RepresentsPayment;
     use RepresentsInvoice;
 
