@@ -2,7 +2,6 @@
 
 namespace Marqant\MarqantPay\Traits\Attributes;
 
-
 use Money\Money;
 use Money\Currency;
 use Money\Currencies\ISOCurrencies;
@@ -39,12 +38,16 @@ trait AmountAttribute
     /**
      * Method to get the amount as float value.
      *
-     * @param int $amount
+     * @param null|int $amount
      *
      * @return string
      */
-    public function getAmountAttribute(int $amount): string
+    public function getAmountAttribute(?int $amount): string
     {
+        if (!$amount) {
+            return 0;
+        }
+
         $currency = strtoupper(MarqantPay::getCurrency()) ?? 'EUR';
 
         /**
