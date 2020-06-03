@@ -14,7 +14,7 @@ abstract class PaymentGatewayContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function createCustomer(Model &$Billable): Model;
+    public abstract function createCustomer(Model $Billable): Model;
 
     /**
      * Charge a given billable for a given amount.
@@ -33,7 +33,7 @@ abstract class PaymentGatewayContract
      * Update Payment status through received payment provider
      *
      * @param \Illuminate\Database\Eloquent\Model $Payment
-     * @param string|null $status
+     * @param string|null                         $status
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -83,7 +83,7 @@ abstract class PaymentGatewayContract
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public abstract function subscribe(Model &$Billable, Model $Plan): Model;
+    public abstract function subscribe(Model $Billable, Model $Plan): Model;
 
     /**
      * Save the provided payment method to the given Billable on the payment provider side.
