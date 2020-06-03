@@ -20,7 +20,11 @@ trait MocksCustomer
     {
         $default_data = [];
 
-        return factory(\App\User::class)->create(array_merge($default_data, $options));
+        $User = factory(\App\User::class, 1)
+            ->create(array_merge($default_data, $options))
+            ->first();
+
+        return $User;
     }
 
     /**

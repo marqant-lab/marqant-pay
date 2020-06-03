@@ -73,7 +73,7 @@ trait AmountAttribute
     }
 
     /**
-     * Method to get the amount as integer value.
+     * Method to get the amount as integer vand lue.
      *
      * @return int
      */
