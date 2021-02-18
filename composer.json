@@ -22,9 +22,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Marqant\\MarqantPay\\Seeds\\": "database/seeds/",
-            "Marqant\\MarqantPay\\Tests\\": "tests/",
-            "Marqant\\MarqantPay\\": "src/"
+            "Marqant\\MarqantPay\\Seeds\\": "database/seeds",
+            "Marqant\\MarqantPay\\Tests\\": "tests",
+            "Marqant\\MarqantPay\\": "src"
         }
     },
     "extra": {
@@ -32,8 +32,7 @@
             "providers": [
                 "Marqant\\MarqantPay\\MarqantPayServiceProvider"
             ],
-            "aliases": {
-            }
+            "aliases": {}
         }
     }
 }

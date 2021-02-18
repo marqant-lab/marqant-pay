@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Tests\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Marqant\MarqantPaySubscriptions\Models\Plan;
 
 trait MocksPlans
 {
@@ -17,7 +18,9 @@ trait MocksPlans
     {
         $default_data = [];
 
-        return factory(\Marqant\MarqantPaySubscriptions\Models\Plan::class)->create(array_merge($default_data,
-            $options));
+        return Plan::factory()->create(array_merge(
+            $default_data,
+            $options
+        ));
     }
 }

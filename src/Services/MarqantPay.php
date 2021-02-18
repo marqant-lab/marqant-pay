@@ -33,8 +33,10 @@ class MarqantPay
      * @return \Marqant\MarqantPay\Contracts\PaymentGatewayContract
      * @throws \Exception
      */
-    public static function resolveProviderGateway(Model $Billable,
-                                                  ?PaymentMethodContract $PaymentMethod = null): PaymentGatewayContract
+    public static function resolveProviderGateway(
+        Model $Billable,
+        ?PaymentMethodContract $PaymentMethod = null
+    ): PaymentGatewayContract
     {
         $provider = $Billable->marqant_pay_provider;
 
@@ -71,7 +73,7 @@ class MarqantPay
      * @return \Illuminate\Database\Eloquent\Model
      * @throws \Exception
      */
-    public static function createCustomer(Model &$Billable, string $provider): Model
+    public static function createCustomer(Model $Billable, string $provider): Model
     {
         self::validateProvider($provider);
 
@@ -219,7 +221,7 @@ class MarqantPay
     /**
      * Remove payment method from billable.
      *
-     * @param \Illuminate\Database\Eloquent\Model                 $Billable
+     * @param \Illuminate\Database\Eloquent\Model $Billable
      *
      * @param \Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
@@ -259,5 +261,4 @@ class MarqantPay
 
         return $ProviderGateway->createPlan($Plan);
     }
-
 }

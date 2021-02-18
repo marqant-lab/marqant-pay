@@ -50,7 +50,17 @@ return [
 ];
 ```
 
-Next you will have to create an entry for it in the database.
+Next you will have to create an entry for it in the database. To do so you can call the following command.
+
+```
+php artisan marqant-pay:providers:update
+```
+
+If you also want to remove the providers that are no longer listed in your configuration, then you can add the `--delete` flag to the command.
+
+```
+php artisan marqant-pay:providers:update --delete
+```
 
 ## Billables
 

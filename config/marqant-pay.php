@@ -11,6 +11,19 @@
  */
 
 return [
+    /*
+     |--------------------------------------------------------------------------
+     | Billables
+     |--------------------------------------------------------------------------
+     |
+     | The models considered as "Billables". All of them need to have the
+     | Billable on them.
+     |
+    */
+
+    'billables' => [
+        App\Models\User::class,
+    ],
 
     /*
      |--------------------------------------------------------------------------
@@ -73,5 +86,4 @@ return [
      */
 
     'default_currency' => env('MARQANT_PAY_CURRENCY', 'eur'),
-
 ];

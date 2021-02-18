@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay;
 
 use Illuminate\Support\ServiceProvider;
+use Marqant\MarqantPay\Commands\UpdateProviders;
 use Marqant\MarqantPay\Commands\MigrationsForBillable;
 
 class MarqantPayServiceProvider extends ServiceProvider
@@ -61,6 +62,7 @@ class MarqantPayServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MigrationsForBillable::class,
+                UpdateProviders::class,
             ]);
         }
     }

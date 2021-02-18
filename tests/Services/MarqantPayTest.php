@@ -25,9 +25,8 @@ class MarqantPayTest extends MarqantPayTestCase
     public function test_if_we_can_resolve_the_provider_from_billable()
     {
         /**
-         * @var \App\User $User
+         * @var \Illuminate\Database\Eloquent\Model $User
          */
-
         $User = $this->createBillableUser();
 
         $Gateway = MarqantPay::resolveProviderGateway($User);
@@ -235,8 +234,12 @@ class MarqantPayTest extends MarqantPayTestCase
         /**
          * @var \Marqant\MarqantPaySubscriptions\Models\Plan $Plan ;
          */
-
         $provider = 'stripe';
+
+        // make sure we have the full list of providers in the database
+        $this->artisan('marqant-pay:providers:update', [
+            '--delete' => true
+        ]);
 
         $Plan = $this->createPlanModel();
 
@@ -246,8 +249,8 @@ class MarqantPayTest extends MarqantPayTestCase
         $this->assertInstanceOf(config('marqant-pay.provider_model'), $Plan->providers->first());
 
         // assert that the field on the plan are filled with valid data
-        $this->assertNotEmpty($Plan->stripe_id);
-        $this->assertNotEmpty($Plan->stripe_product);
+        $this->assertNotEmpty($Plan->stripe_id, 'Stripe ID is not set.');
+        $this->assertNotEmpty($Plan->stripe_product, 'Stripe Product is not set.');
     }
 
     /**
@@ -267,6 +270,11 @@ class MarqantPayTest extends MarqantPayTestCase
          */
 
         $provider = 'stripe';
+
+        // make sure we have the full list of providers in the database
+        $this->artisan('marqant-pay:providers:update', [
+            '--delete' => true
+        ]);
 
         $Plan = $this->createPlanModel();
 
