@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "illuminate/support": "^6.0|^7.0",
-        "cviebrock/eloquent-sluggable": "^6.0|^7.0",
+        "illuminate/support": "^6.0|^7.0|^8.0",
+        "cviebrock/eloquent-sluggable": "^6.0|^7.0|^8.0",
         "i-rocky/eloquent-dynamic-relation": "^1.0",
         "moneyphp/money": "^3.2",
         "php": "^7.4",
