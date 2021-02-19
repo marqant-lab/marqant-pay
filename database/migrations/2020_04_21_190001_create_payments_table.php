@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->integer('amount');
             $table->string('currency');
             $table->string('status');
+            $table->string('description')->nullable();
 
             // setup polymorphic relationship
             $table->bigInteger('billable_id');

@@ -36,8 +36,7 @@ class MarqantPay
     public static function resolveProviderGateway(
         Model $Billable,
         ?PaymentMethodContract $PaymentMethod = null
-    ): PaymentGatewayContract
-    {
+    ): PaymentGatewayContract {
         $provider = $Billable->marqant_pay_provider;
 
         if ($PaymentMethod) {
@@ -90,16 +89,17 @@ class MarqantPay
      * @param \Illuminate\Database\Eloquent\Model                      $Billable
      * @param int                                                      $amount
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
+     * @param null|string                                              $description
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    public static function charge(Model $Billable, int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
+    public static function charge(Model $Billable, float $amount, ?PaymentMethodContract $PaymentMethod = null, ?string $description = null): Model
     {
         $ProviderGateway = self::resolveProviderGateway($Billable, $PaymentMethod);
 
-        return $ProviderGateway->charge($Billable, $amount, $PaymentMethod);
+        return $ProviderGateway->charge($Billable, $amount, $PaymentMethod, $description);
     }
 
     /**
@@ -260,5 +260,54 @@ class MarqantPay
         $ProviderGateway = self::resolveProviderGatewayFromString($provider);
 
         return $ProviderGateway->createPlan($Plan);
+    }
+
+    /**
+     * Update Payment status through received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     * @param string|null                         $status
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws Exception
+     */
+    public static function updatePaymentStatus(Model $Payment, $status = null): Model
+    {
+        $ProviderGateway = self::resolveProviderGatewayFromString($Payment->provider);
+
+        return $ProviderGateway->updatePaymentStatus($Payment, $status);
+    }
+
+    /**
+     * Send email if Payment failed through received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public static function sendEmailFailedPayment(Model $Payment)
+    {
+        $ProviderGateway = self::resolveProviderGatewayFromString($Payment->provider);
+
+        return $ProviderGateway->sendEmailFailedPayment($Payment);
+    }
+
+    /**
+     * Send email if Payment failed to support emails
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Exception
+     */
+    public static function sendSupportEmailFailedPayment(Model $Payment)
+    {
+        $ProviderGateway = self::resolveProviderGatewayFromString($Payment->provider);
+
+        return $ProviderGateway->sendSupportEmailFailedPayment($Payment);
     }
 }

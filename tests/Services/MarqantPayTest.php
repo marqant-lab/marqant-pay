@@ -167,7 +167,7 @@ class MarqantPayTest extends MarqantPayTestCase
          * @var \App\User $User
          */
 
-        $amount = 999; // 9,99 ($|€|...)
+        $amount = 9.99; // 9,99 ($|€|...)
 
         // create fake customer through factory
         $User = $this->createBillableUser();
@@ -200,7 +200,7 @@ class MarqantPayTest extends MarqantPayTestCase
          * @var \App\User $User
          */
 
-        $amount = 999; // 9,99 ($|€|...)
+        $amount = 9.99; // 9,99 ($|€|...)
 
         // create fake customer through factory
         $User = $this->createUser();

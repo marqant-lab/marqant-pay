@@ -3,6 +3,7 @@
 namespace Marqant\MarqantPay\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Marqant\MarqantPay\Traits\RepresentsInvoice;
 use Marqant\MarqantPay\Traits\RepresentsPayment;
 
 /**
@@ -12,7 +13,10 @@ use Marqant\MarqantPay\Traits\RepresentsPayment;
  */
 class Payment extends Model
 {
+    const STATUS_FAILED = 'failed';
+
     use RepresentsPayment;
+    use RepresentsInvoice;
 
     /**
      * The attributes that aren't mass assignable.
@@ -20,4 +24,14 @@ class Payment extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * Get the raw amount from the database as integer.
+     *
+     * @return int
+     */
+    public function getAmountRawAttribute(): int
+    {
+        return $this->attributes['amount'];
+    }
 }

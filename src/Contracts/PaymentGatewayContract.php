@@ -22,9 +22,56 @@ abstract class PaymentGatewayContract
      * @param  Model                      $Billable
      * @param  float                      $amount
      * @param  null|PaymentMethodContract $PaymentMethod
+     * @param  null|string                $description
      * @return Model
      */
-    abstract public function charge(Model $Billable, float $amount, ?PaymentMethodContract $PaymentMethod = null): Model;
+    abstract public function charge(Model $Billable, float $amount, ?PaymentMethodContract $PaymentMethod = null, ?string $description = null): Model;
+
+    /**
+     * Update Payment status through received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     * @param string|null                         $status
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    abstract public function updatePaymentStatus(Model $Payment, $status = null): Model;
+
+    /**
+     * Send email if Payment failed for received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    abstract public function sendEmailFailedPayment(Model $Payment): Model;
+
+    /**
+     * Send email if Payment failed for received payment provider
+     *
+     * @param \Illuminate\Database\Eloquent\Model $Payment
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    abstract public function sendSupportEmailFailedPayment(Model $Payment): Model;
+
+    /**
+     * Get or create (if not exists) Payment using provider data
+     *
+     * @param array $invoice_data
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    abstract public function getPaymentByInvoice(array $invoice_data): Model;
+
+    /**
+     * Create Payment using provider data
+     *
+     * @param string $payment_id
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    abstract public function createPaymentByProviderPaymentID(string $payment_id): Model;
 
     /**
      * Subscribe a given Billable to a plan on the payment provider side.

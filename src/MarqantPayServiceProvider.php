@@ -30,6 +30,8 @@ class MarqantPayServiceProvider extends ServiceProvider
         $this->setupMigrations();
 
         $this->setupCommands();
+
+        $this->setupResources();
     }
 
     /**
@@ -74,5 +76,15 @@ class MarqantPayServiceProvider extends ServiceProvider
      */
     private function setupFacades()
     {
+    }
+
+    /**
+     * Setup resources in boot method.
+     *
+     * @return void
+     */
+    private function setupResources()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'marqant-pay');
     }
 }

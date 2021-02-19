@@ -27,16 +27,16 @@ trait Billable
     /**
      * Charge the Billable for a given amount.
      *
-     * @param int                                                      $amount
+     * @param float                                                    $amount
      * @param null|\Marqant\MarqantPay\Contracts\PaymentMethodContract $PaymentMethod
      *
      * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Exception
      */
-    public function charge(int $amount, ?PaymentMethodContract $PaymentMethod = null): Model
+    public function charge(float $amount, ?PaymentMethodContract $PaymentMethod = null, ?string $description = null): Model
     {
-        return MarqantPay::charge($this, $amount, $PaymentMethod);
+        return MarqantPay::charge($this, $amount, $PaymentMethod, $description);
     }
 
     /**
